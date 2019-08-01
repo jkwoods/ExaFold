@@ -28,12 +28,11 @@ dist_force.addPerBondParameter("r0")
 
 #add all dist
 #restraints.txt consists of one restraint per line
-#with the format:
 #atom_index_i 	atom_index_j	r0	k
 
 # where the indices are zero-based
 # from linear amber file
-# make sure this file is cleaned of duplicates!!
+# make sure this file is cleaned of duplicates
 with open('dist_rst.txt') as input_file:
     for line in input_file:
         columns = line.split()
@@ -45,7 +44,6 @@ with open('dist_rst.txt') as input_file:
 
 #add all ang
 #restraints.txt consists of one restraint per line
-#with the format:
 #particle_1_index	part2	part3	part4	phase0	k
 
 # where the indices are zero-based
@@ -66,8 +64,6 @@ with open('dist_rst.txt') as input_file:
 #make system
 system = prmtop.createSystem(nonbondedMethod=NoCutoff, constraints=None) #gas phase
 print("num of part: " + str(system.getNumParticles()))
-print(XmlSerializer.serialize(system));
-print("AFTER")
 system.addForce(dist_force)
 
 integrator = LangevinIntegrator(300*kelvin, 1/picosecond, 0.001*picoseconds) #1 fs steps
