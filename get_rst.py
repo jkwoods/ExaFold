@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+
+import sys
+import Bio.PDB
+import numpy as np
+import math
+
 dist_kforce = float(sys.argv[3])
 
 d = open("dist_rst.txt", "w+")
