@@ -18,7 +18,7 @@ import numpy as np
 with open('fold_parameters.json') as json_file: #left some currently unused restraints in case we want to use later
     data = json.load(json_file)
     name = data['name']
-    fasta = data['fasta']
+    input_seq = data['input_seq']
     #distance_rst = data['distanceRstFile']
     #distance_force = data['distanceForce']
     #torsion_rst = data['angleRstFile']
@@ -28,44 +28,15 @@ with open('fold_parameters.json') as json_file: #left some currently unused rest
     forcefield = data["forcefield"] #i've copied in ff14SB to the repo, bc otherwise hard to find on cades vs personal computers. Its Amber's proclaimed "best for protiens" forcefeild
 
 #open and read FASTA
-with open(fasta) as f:
+with open(input_seq) as f:
     lines = f.readlines()
     seq = ""
     for l in lines:
-            if (not (l.startswith(">") or l.startswith(";"))):
-                    seq = seq + l
+        seq = seq + l
 
 seq = seq.replace("\n", "") #clean
 
-#generate sequence of triples
-def tri(x):
-        return {
-                'A': 'ALA',
-                'R': 'ARG',
-                'N': 'ASN',
-                'D': 'ASP',
-                'C': 'CYS',
-                'Q': 'GLN',
-                'E': 'GLU',
-                'G': 'GLY',
-                'H': 'HIS',
-                'I': 'ILE',
-                'L': 'LEU',
-                'K': 'LYS',
-                'M': 'MET',
-                'F': 'PHE',
-                'P': 'PRO',
-                'S': 'SER',
-                'T': 'THR',
-                'W': 'TRP',
-                'Y': 'TYR',
-                'V': 'VAL'
-        }.get(x, '')
-
-triseq = "{ "
-for s in seq:
-        triseq = triseq + tri(s) + " "
-triseq = triseq + "}"
+triseq = "{ "+ seq + "}"
 
 print("Sequence is: "+ str(triseq))
 
