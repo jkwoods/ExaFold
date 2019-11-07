@@ -1,0 +1,11 @@
+{
+	"name": "1ubq",
+	"fasta": "1ubq.fasta.example",
+	"distanceRstFile": "1ubq.8col.example",
+	"angleRstFile": "1ubq.5col.example",
+	"distanceForce": [70.0, 70.0],
+	"angleForce": [40.0, 40.0],
+	"temp": [600.0, 600.0],
+  "cycles": 2,
+	"forcefield": "ff14SB"
+}
