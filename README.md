@@ -12,13 +12,11 @@ python set_up.py
 2. Jinbo Xu's txt file (input.seq) with the sequence in three letter chunks (i.e., "MET PHE ILE GLU ...")
 3. Jinbo Xu's Distance Restraints list (contact.tbl)
 4. Jinbo Xu's Torsion Restraints list (dihedral.tbl)
-5. List of Force Constants for the distance restraints as floats (in kcal/mol·Angstroms)
-6. List of Force Constants for the torsion restraints as floats (in in 70 kcal/mol·rad)
-7. List of (highest) Temperatures for the simulated annealing cycles as floats (in K)
-8. Number of simulated annealing cycles to run (int)
+5. List of Force Constants for the distance restraints as floats (in kcal/mol·Angstroms) [NOT CURRENTLY USED]
+6. List of Force Constants for the torsion restraints as floats (in in 70 kcal/mol·rad) [NOT CURRENTLY USED]
+7. List of (highest) Temperatures for the simulated annealing cycles as floats (in K) [NOT CURRENTLY USED]
+8. Number of simulated annealing cycles to run (int) [NOT CURRENTLY USED]
 9. The path to the Amber forcefield, if you would like to change the forcefield; will vary depending on where your AmberTools package is
-
->The given example file has what I have found to be good defaults.
 
 
 **Notes**
