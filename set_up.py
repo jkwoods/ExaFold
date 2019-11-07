@@ -4,7 +4,7 @@
 #                                                                                                                       #
 #       Sequence to Amber Linear pdb                                                                                    #
 #                                                                                                                       #
-#       input: from linear_parameters.json file                                                                         #                                                               #
+#       input: from fold_parameters.json file                                                                         #                                                               #
 #                                                                                                                       #
 #       output: AmberTools linear/parameters files                                                                      #
 #                                                                                                                       #
