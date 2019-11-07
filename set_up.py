@@ -19,12 +19,12 @@ with open('fold_parameters.json') as json_file: #left some currently unused rest
     data = json.load(json_file)
     name = data['name']
     fasta = data['fasta']
-    distance_rst = data['distanceRstFile']
-    distance_force = data['distanceForce']
-    torsion_rst = data['angleRstFile']
-    torsion_force = data['angleForce']
-    temp = data['temp']
-    annealing_runs = int(data['cycles'])
+    #distance_rst = data['distanceRstFile']
+    #distance_force = data['distanceForce']
+    #torsion_rst = data['angleRstFile']
+    #torsion_force = data['angleForce']
+    #temp = data['temp']
+    #annealing_runs = int(data['cycles'])
     forcefield = data["forcefield"]
 
 #open and read FASTA
