@@ -1,8 +1,8 @@
 {
-	"name": "1ubq",
-	"input_seq": "input.seq",
-	"distanceRstFile": "contact.tbl",
-	"angleRstFile": "dihedral.tbl",
+	"name": "T0968s2_example",
+	"input_seq": "T0968s2_example_input/input.seq",
+	"distanceRstFile": "T0968s2_example_input/contact.tbl",
+	"angleRstFile": "T0968s2_example_input/dihedral.tbl",
 	"distanceForce": [70.0, 70.0],
 	"angleForce": [40.0, 40.0],
 	"temp": [600.0, 600.0],
