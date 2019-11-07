@@ -53,13 +53,14 @@ print("Amber paramaters and linear file generated")
 #preliminary parsing of Jinbo's rst files - you can change this however is needed for openmm
 
 seq_array = seq.split(" ")
-print(seq)
-print(seq_array)
+for s in seq_array:
+    if(s==""): seq_array.remove(s)
 
 with open(distance_rst) as f:
     for line in f:
         columns = line.split()
         
+	#some of this (esp atom names) might have to be done differently
         res1_id = int(columns[2])
         res1_name = seq_array[res1_id-1]
         atom1_name = columns[5][:-1]
