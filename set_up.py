@@ -4,7 +4,7 @@
 #                                                                                                                       #
 #       Sequence to Amber Linear pdb                                                                                    #
 #                                                                                                                       #
-#       input: from fold_parameters.json file                                                                         #                                                               #
+#       input: from fold_parameters.json file                                                                           #                                                               #
 #                                                                                                                       #
 #       output: AmberTools linear/parameters files                                                                      #
 #                                                                                                                       #
@@ -48,3 +48,54 @@ h.close()
 subprocess.call('tleap -s -f amberscript', shell=True)
 
 print("Amber paramaters and linear file generated")
+
+
+#preliminary parsing of Jinbo's rst files - you can change this however is needed for openmm
+
+seq_array = seq.split(" ")
+print(seq)
+print(seq_array)
+
+with open(distance_rst) as f:
+    for line in f:
+        columns = line.split()
+        
+        res1_id = int(columns[2])
+        res1_name = seq_array[res1_id-1]
+        atom1_name = columns[5][:-1]
+        atom1_name = atom1_name.upper()
+
+        res2_id = int(columns[7])
+        res2_name = seq_array[res2_id-1]
+        atom2_name = columns[10][:-1]
+        atom2_name = atom2_name.upper()
+        #print("res1_id="+str(res1_id)+" res1_name="+str(res1_name)+" atom1_name="+str(atom1_name)+" res2_id="+str(res2_id)+" res2_name="+str(res2_name)+" atom2_name="+str(atom2_name))
+
+        ave_dist = float(columns[11])
+        dminus = float(columns[12])
+        dplus = float(columns[13])
+
+        dlower = ave_dist - dminus #lower bound
+        dupper = ave_dist + dplus #upper bound
+
+        #d.write("%i    %s    %s    %i    %s    %s    %.2f    %.2f\n" % (res1_id, res1_name, atom1_name, res2_id, res2_name, atom2_name, dlower,dupper))
+
+        
+with open(torsion_rst) as f:
+    for line in f:
+        columns = line.split()
+
+        #completely different stuff here for openmm
+        
+        angle = float(columns[22])
+        arange = float(columns[23])
+
+        alower = angle - arange #lower bound
+        aupper = angle + arange #upper bound
+
+        # "exponent" for jx is always 2 - pretty sure that correlates to built in ^2 in harmonic force in amber and openmm
+
+        #a.write("%i    %s    %s    %.1f    %.1f\n" % (res_id, res_name, phi_psi, alower, aupper))
+
+
+
