@@ -25,7 +25,7 @@ with open('fold_parameters.json') as json_file: #left some currently unused rest
     #torsion_force = data['angleForce']
     #temp = data['temp']
     #annealing_runs = int(data['cycles'])
-    forcefield = data["forcefield"]
+    forcefield = data["forcefield"] #i've copied in ff14SB to the repo, bc otherwise hard to find on cades vs personal computers. Its Amber's proclaimed "best for protiens" forcefeild
 
 #open and read FASTA
 with open(fasta) as f:
@@ -36,8 +36,6 @@ with open(fasta) as f:
                     seq = seq + l
 
 seq = seq.replace("\n", "") #clean
-
-print(seq)
 
 #generate sequence of triples
 def tri(x):
