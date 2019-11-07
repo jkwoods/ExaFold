@@ -2,7 +2,7 @@
 
 #########################################################################################################################
 #                                                                                                                       #
-#       PIPELINE - From Sequence to Folded Protein                                                                      #
+#       Sequence to Amber Linear pdb                                                                                    #
 #                                                                                                                       #
 #       input: from linear_parameters.json file                                                                         #                                                               #
 #                                                                                                                       #
@@ -14,10 +14,8 @@ import sys
 import subprocess
 import json
 import numpy as np
-import math
 
-
-with open('fold_parameters.json') as json_file:
+with open('fold_parameters.json') as json_file: #left some currently unused restraints in case we want to use later
     data = json.load(json_file)
     name = data['name']
     fasta = data['fasta']
@@ -27,20 +25,15 @@ with open('fold_parameters.json') as json_file:
     torsion_force = data['angleForce']
     temp = data['temp']
     annealing_runs = int(data['cycles'])
-    mpi_prefix = data["mpi"]
     forcefield = data["forcefield"]
 
-
-print("Reading Sequence ...")
 #open and read FASTA
-f = open(fasta, "r")
-lines = f.readlines()
-seq = ""
-for l in lines:
-        if (not (l.startswith(">") or l.startswith(";"))):
-                seq = seq + l
-
-f.close()
+with open(fasta) as f:
+    lines = f.readlines()
+    seq = ""
+    for l in lines:
+            if (not (l.startswith(">") or l.startswith(";"))):
+                    seq = seq + l
 
 seq = seq.replace("\n", "") #clean
 
@@ -78,7 +71,7 @@ triseq = triseq + "}"
 
 print("Sequence is: "+ str(triseq))
 
-#generate Amber Tools helper file
+#generate Amber Tools helper file - tleap will not run unless everything is copied into the forcefield file
 subprocess.call('cp '+forcefield+' amberscript', shell=True)
 
 h = open("amberscript", "a")
@@ -86,8 +79,6 @@ h = open("amberscript", "a")
 h.write("\n"+name+" = sequence "+triseq+"\nsaveoff "+name+" linear.lib\nsavepdb "+name+" linear.pdb\nsaveamberparm "+name+" prmtop rst7\nquit")
 
 h.close()
-
-print("Generating linear peptide ...")
 
 #call Amber Tools tleap
 subprocess.call('tleap -s -f amberscript', shell=True)
