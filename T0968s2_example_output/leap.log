@@ -1,0 +1,483 @@
+log started: Thu Nov  7 11:30:14 2019
+
+Log file: ./leap.log
+> #
+> # ----- leaprc for loading the ff14SB force field
+> # ----- NOTE: this is designed for PDB format 3!
+> #
+> #	load atom type hybridizations
+> #
+> addAtomTypes {
+> 	{ "H"   "H" "sp3" }
+> 	{ "HO"  "H" "sp3" }
+> 	{ "HS"  "H" "sp3" }
+> 	{ "H1"  "H" "sp3" }
+> 	{ "H2"  "H" "sp3" }
+> 	{ "H3"  "H" "sp3" }
+> 	{ "H4"  "H" "sp3" }
+> 	{ "H5"  "H" "sp3" }
+> 	{ "HW"  "H" "sp3" }
+> 	{ "HC"  "H" "sp3" }
+> 	{ "HA"  "H" "sp3" }
+> 	{ "HP"  "H" "sp3" }
+> 	{ "HZ"  "H" "sp3" }
+> 	{ "OH"  "O" "sp3" }
+> 	{ "OS"  "O" "sp3" }
+> 	{ "O"   "O" "sp2" }
+> 	{ "O2"  "O" "sp2" }
+> 	{ "OP"  "O" "sp2" }
+> 	{ "OW"  "O" "sp3" }
+> 	{ "CT"  "C" "sp3" }
+> 	{ "CX"  "C" "sp3" }
+> 	{ "C8"  "C" "sp3" }
+> 	{ "2C"  "C" "sp3" }
+> 	{ "3C"  "C" "sp3" }
+> 	{ "CH"  "C" "sp3" }
+> 	{ "CS"  "C" "sp2" }
+> 	{ "C"   "C" "sp2" }
+> 	{ "CO"   "C" "sp2" }
+> 	{ "C*"  "C" "sp2" }
+> 	{ "CA"  "C" "sp2" }
+> 	{ "CB"  "C" "sp2" }
+> 	{ "CC"  "C" "sp2" }
+> 	{ "CN"  "C" "sp2" }
+> 	{ "CM"  "C" "sp2" }
+> 	{ "CK"  "C" "sp2" }
+> 	{ "CQ"  "C" "sp2" }
+> 	{ "CD"  "C" "sp2" }
+> 	{ "C5"  "C" "sp2" }
+> 	{ "C4"  "C" "sp2" }
+> 	{ "CP"  "C" "sp2" }
+> 	{ "CI"  "C" "sp3" }
+> 	{ "CJ"  "C" "sp2" }
+> 	{ "CW"  "C" "sp2" }
+> 	{ "CV"  "C" "sp2" }
+> 	{ "CR"  "C" "sp2" }
+> 	{ "CA"  "C" "sp2" }
+> 	{ "CY"  "C" "sp2" }
+> 	{ "C0"  "Ca" "sp3" }
+> 	{ "MG"  "Mg" "sp3" }
+> 	{ "N"   "N" "sp2" }
+> 	{ "NA"  "N" "sp2" }
+> 	{ "N2"  "N" "sp2" }
+> 	{ "N*"  "N" "sp2" }
+> 	{ "NP"  "N" "sp2" }
+> 	{ "NQ"  "N" "sp2" }
+> 	{ "NB"  "N" "sp2" }
+> 	{ "NC"  "N" "sp2" }
+> 	{ "NT"  "N" "sp3" }
+> 	{ "NY"  "N" "sp2" }
+> 	{ "N3"  "N" "sp3" }
+> 	{ "S"   "S" "sp3" }
+> 	{ "SH"  "S" "sp3" }
+> 	{ "P"   "P" "sp3" }
+> 	{ "LP"  ""  "sp3" }
+> 	{ "EP"  ""  "sp3" }
+> 	{ "F"   "F" "sp3" }
+> 	{ "Cl"  "Cl" "sp3" }
+> 	{ "Br"  "Br" "sp3" }
+> 	{ "I"   "I"  "sp3" }
+> }
+> #
+> #	Load the main parameter set.
+> #
+> parm10 = loadamberparams parm10.dat
+Loading parameters: /software/dev_tools/swtree/cs400_centos7.2_pe2016-08/amber/16/centos7.2_gnu5.3.0/amber16/dat/leap/parm/parm10.dat
+Reading title:
+PARM99 + frcmod.ff99SB + frcmod.parmbsc0 + OL3 for RNA
+(UNKNOWN ATOM TYPE: Zn)
+(UNKNOWN ATOM TYPE: EP)
+> frcmod14SB = loadamberparams frcmod.ff14SB
+Loading parameters: /software/dev_tools/swtree/cs400_centos7.2_pe2016-08/amber/16/centos7.2_gnu5.3.0/amber16/dat/leap/parm/frcmod.ff14SB
+Reading force field modification type file (frcmod)
+Reading title:
+ff14SB protein backbone and sidechain parameters
+> #
+> #	Load main chain and terminating amino acid libraries
+> #
+> loadOff amino12.lib
+Loading library: /software/dev_tools/swtree/cs400_centos7.2_pe2016-08/amber/16/centos7.2_gnu5.3.0/amber16/dat/leap/lib/amino12.lib
+Loading: ALA
+Loading: ARG
+Loading: ASH
+Loading: ASN
+Loading: ASP
+Loading: CYM
+Loading: CYS
+Loading: CYX
+Loading: GLH
+Loading: GLN
+Loading: GLU
+Loading: GLY
+Loading: HID
+Loading: HIE
+Loading: HIP
+Loading: HYP
+Loading: ILE
+Loading: LEU
+Loading: LYN
+Loading: LYS
+Loading: MET
+Loading: PHE
+Loading: PRO
+Loading: SER
+Loading: THR
+Loading: TRP
+Loading: TYR
+Loading: VAL
+> loadOff aminoct12.lib
+Loading library: /software/dev_tools/swtree/cs400_centos7.2_pe2016-08/amber/16/centos7.2_gnu5.3.0/amber16/dat/leap/lib/aminoct12.lib
+Loading: CALA
+Loading: CARG
+Loading: CASN
+Loading: CASP
+Loading: CCYS
+Loading: CCYX
+Loading: CGLN
+Loading: CGLU
+Loading: CGLY
+Loading: CHID
+Loading: CHIE
+Loading: CHIP
+Loading: CHYP
+Loading: CILE
+Loading: CLEU
+Loading: CLYS
+Loading: CMET
+Loading: CPHE
+Loading: CPRO
+Loading: CSER
+Loading: CTHR
+Loading: CTRP
+Loading: CTYR
+Loading: CVAL
+Loading: NHE
+Loading: NME
+> loadOff aminont12.lib
+Loading library: /software/dev_tools/swtree/cs400_centos7.2_pe2016-08/amber/16/centos7.2_gnu5.3.0/amber16/dat/leap/lib/aminont12.lib
+Loading: ACE
+Loading: NALA
+Loading: NARG
+Loading: NASN
+Loading: NASP
+Loading: NCYS
+Loading: NCYX
+Loading: NGLN
+Loading: NGLU
+Loading: NGLY
+Loading: NHID
+Loading: NHIE
+Loading: NHIP
+Loading: NILE
+Loading: NLEU
+Loading: NLYS
+Loading: NMET
+Loading: NPHE
+Loading: NPRO
+Loading: NSER
+Loading: NTHR
+Loading: NTRP
+Loading: NTYR
+Loading: NVAL
+> 
+> #
+> #	Define the PDB name map for the amino acids
+> #
+> addPdbResMap {
+>   { 0 "HYP" "HYP" } { 1 "HYP" "CHYP" }
+>   { 0 "ALA" "NALA" } { 1 "ALA" "CALA" }
+>   { 0 "ARG" "NARG" } { 1 "ARG" "CARG" }
+>   { 0 "ASN" "NASN" } { 1 "ASN" "CASN" }
+>   { 0 "ASP" "NASP" } { 1 "ASP" "CASP" }
+>   { 0 "CYS" "NCYS" } { 1 "CYS" "CCYS" }
+>   { 0 "CYX" "NCYX" } { 1 "CYX" "CCYX" }
+>   { 0 "GLN" "NGLN" } { 1 "GLN" "CGLN" }
+>   { 0 "GLU" "NGLU" } { 1 "GLU" "CGLU" }
+>   { 0 "GLY" "NGLY" } { 1 "GLY" "CGLY" }
+>   { 0 "HID" "NHID" } { 1 "HID" "CHID" }
+>   { 0 "HIE" "NHIE" } { 1 "HIE" "CHIE" }
+>   { 0 "HIP" "NHIP" } { 1 "HIP" "CHIP" }
+>   { 0 "ILE" "NILE" } { 1 "ILE" "CILE" }
+>   { 0 "LEU" "NLEU" } { 1 "LEU" "CLEU" }
+>   { 0 "LYS" "NLYS" } { 1 "LYS" "CLYS" }
+>   { 0 "MET" "NMET" } { 1 "MET" "CMET" }
+>   { 0 "PHE" "NPHE" } { 1 "PHE" "CPHE" }
+>   { 0 "PRO" "NPRO" } { 1 "PRO" "CPRO" }
+>   { 0 "SER" "NSER" } { 1 "SER" "CSER" }
+>   { 0 "THR" "NTHR" } { 1 "THR" "CTHR" }
+>   { 0 "TRP" "NTRP" } { 1 "TRP" "CTRP" }
+>   { 0 "TYR" "NTYR" } { 1 "TYR" "CTYR" }
+>   { 0 "VAL" "NVAL" } { 1 "VAL" "CVAL" }
+>   { 0 "HIS" "NHIS" } { 1 "HIS" "CHIS" }
+> }
+> 
+> #
+> # assume that most often proteins use HIE
+> #
+> NHIS = NHIE
+> HIS = HIE
+> CHIS = CHIE
+> 
+> T0968s2_example = sequence { MET PHE ILE GLU ASN LYS PRO GLY GLU ILE GLU LEU LEU SER PHE PHE GLU SER GLU PRO VAL SER PHE GLU ARG ASP ASN ILE SER PHE LEU TYR THR ALA LYS ASN LYS CYS GLY LEU SER VAL ASP PHE SER PHE SER VAL VAL GLU GLY TRP ILE GLN TYR THR VAL ARG LEU HIS GLU ASN GLU ILE LEU HIS ASN SER ILE ASP GLY VAL SER SER PHE SER ILE ARG ASN ASP ASN LEU GLY ASP TYR ILE TYR ALA GLU ILE ILE THR LYS GLU LEU ILE ASN LYS ILE GLU ILE ARG ILE ARG PRO ASP ILE LYS ILE LYS SER SER SER VAL ILE ARG }
+Sequence: MET
+Sequence: PHE
+Joining MET - PHE
+Sequence: ILE
+Joining PHE - ILE
+Sequence: GLU
+Joining ILE - GLU
+Sequence: ASN
+Joining GLU - ASN
+Sequence: LYS
+Joining ASN - LYS
+Sequence: PRO
+Joining LYS - PRO
+Sequence: GLY
+Joining PRO - GLY
+Sequence: GLU
+Joining GLY - GLU
+Sequence: ILE
+Joining GLU - ILE
+Sequence: GLU
+Joining ILE - GLU
+Sequence: LEU
+Joining GLU - LEU
+Sequence: LEU
+Joining LEU - LEU
+Sequence: SER
+Joining LEU - SER
+Sequence: PHE
+Joining SER - PHE
+Sequence: PHE
+Joining PHE - PHE
+Sequence: GLU
+Joining PHE - GLU
+Sequence: SER
+Joining GLU - SER
+Sequence: GLU
+Joining SER - GLU
+Sequence: PRO
+Joining GLU - PRO
+Sequence: VAL
+Joining PRO - VAL
+Sequence: SER
+Joining VAL - SER
+Sequence: PHE
+Joining SER - PHE
+Sequence: GLU
+Joining PHE - GLU
+Sequence: ARG
+Joining GLU - ARG
+Sequence: ASP
+Joining ARG - ASP
+Sequence: ASN
+Joining ASP - ASN
+Sequence: ILE
+Joining ASN - ILE
+Sequence: SER
+Joining ILE - SER
+Sequence: PHE
+Joining SER - PHE
+Sequence: LEU
+Joining PHE - LEU
+Sequence: TYR
+Joining LEU - TYR
+Sequence: THR
+Joining TYR - THR
+Sequence: ALA
+Joining THR - ALA
+Sequence: LYS
+Joining ALA - LYS
+Sequence: ASN
+Joining LYS - ASN
+Sequence: LYS
+Joining ASN - LYS
+Sequence: CYS
+Joining LYS - CYS
+Sequence: GLY
+Joining CYS - GLY
+Sequence: LEU
+Joining GLY - LEU
+Sequence: SER
+Joining LEU - SER
+Sequence: VAL
+Joining SER - VAL
+Sequence: ASP
+Joining VAL - ASP
+Sequence: PHE
+Joining ASP - PHE
+Sequence: SER
+Joining PHE - SER
+Sequence: PHE
+Joining SER - PHE
+Sequence: SER
+Joining PHE - SER
+Sequence: VAL
+Joining SER - VAL
+Sequence: VAL
+Joining VAL - VAL
+Sequence: GLU
+Joining VAL - GLU
+Sequence: GLY
+Joining GLU - GLY
+Sequence: TRP
+Joining GLY - TRP
+Sequence: ILE
+Joining TRP - ILE
+Sequence: GLN
+Joining ILE - GLN
+Sequence: TYR
+Joining GLN - TYR
+Sequence: THR
+Joining TYR - THR
+Sequence: VAL
+Joining THR - VAL
+Sequence: ARG
+Joining VAL - ARG
+Sequence: LEU
+Joining ARG - LEU
+Sequence: HIE
+Joining LEU - HIE
+Sequence: GLU
+Joining HIE - GLU
+Sequence: ASN
+Joining GLU - ASN
+Sequence: GLU
+Joining ASN - GLU
+Sequence: ILE
+Joining GLU - ILE
+Sequence: LEU
+Joining ILE - LEU
+Sequence: HIE
+Joining LEU - HIE
+Sequence: ASN
+Joining HIE - ASN
+Sequence: SER
+Joining ASN - SER
+Sequence: ILE
+Joining SER - ILE
+Sequence: ASP
+Joining ILE - ASP
+Sequence: GLY
+Joining ASP - GLY
+Sequence: VAL
+Joining GLY - VAL
+Sequence: SER
+Joining VAL - SER
+Sequence: SER
+Joining SER - SER
+Sequence: PHE
+Joining SER - PHE
+Sequence: SER
+Joining PHE - SER
+Sequence: ILE
+Joining SER - ILE
+Sequence: ARG
+Joining ILE - ARG
+Sequence: ASN
+Joining ARG - ASN
+Sequence: ASP
+Joining ASN - ASP
+Sequence: ASN
+Joining ASP - ASN
+Sequence: LEU
+Joining ASN - LEU
+Sequence: GLY
+Joining LEU - GLY
+Sequence: ASP
+Joining GLY - ASP
+Sequence: TYR
+Joining ASP - TYR
+Sequence: ILE
+Joining TYR - ILE
+Sequence: TYR
+Joining ILE - TYR
+Sequence: ALA
+Joining TYR - ALA
+Sequence: GLU
+Joining ALA - GLU
+Sequence: ILE
+Joining GLU - ILE
+Sequence: ILE
+Joining ILE - ILE
+Sequence: THR
+Joining ILE - THR
+Sequence: LYS
+Joining THR - LYS
+Sequence: GLU
+Joining LYS - GLU
+Sequence: LEU
+Joining GLU - LEU
+Sequence: ILE
+Joining LEU - ILE
+Sequence: ASN
+Joining ILE - ASN
+Sequence: LYS
+Joining ASN - LYS
+Sequence: ILE
+Joining LYS - ILE
+Sequence: GLU
+Joining ILE - GLU
+Sequence: ILE
+Joining GLU - ILE
+Sequence: ARG
+Joining ILE - ARG
+Sequence: ILE
+Joining ARG - ILE
+Sequence: ARG
+Joining ILE - ARG
+Sequence: PRO
+Joining ARG - PRO
+Sequence: ASP
+Joining PRO - ASP
+Sequence: ILE
+Joining ASP - ILE
+Sequence: LYS
+Joining ILE - LYS
+Sequence: ILE
+Joining LYS - ILE
+Sequence: LYS
+Joining ILE - LYS
+Sequence: SER
+Joining LYS - SER
+Sequence: SER
+Joining SER - SER
+Sequence: SER
+Joining SER - SER
+Sequence: VAL
+Joining SER - VAL
+Sequence: ILE
+Joining VAL - ILE
+Sequence: ARG
+Joining ILE - ARG
+> saveoff T0968s2_example linear.lib
+ Creating linear.lib
+Saving T0968s2_example.
+Building topology.
+Building atom parameters.
+> savepdb T0968s2_example linear.pdb
+Writing pdb file: linear.pdb
+> saveamberparm T0968s2_example prmtop rst7
+Checking Unit.
+WARNING: The unperturbed charge of the unit: -5.000000 is not zero.
+
+ -- ignoring the warning.
+
+Building topology.
+Building atom parameters.
+Building bond parameters.
+Building angle parameters.
+Building proper torsion parameters.
+Building improper torsion parameters.
+ ** Warning: No sp2 improper torsion term for  C*-CN-CB-CA
+        atoms are: CG CE2 CD2 CE3
+ ** Warning: No sp2 improper torsion term for  NA-CA-CN-CB
+        atoms are: NE1 CZ2 CE2 CD2
+ total 377 improper torsions applied
+Building H-Bond parameters.
+Incorporating Non-Bonded adjustments.
+Not Marking per-residue atom chain types.
+Marking per-residue atom chain types.
+ (no restraints)
+ quit
+	Quit
