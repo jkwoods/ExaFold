@@ -1,0 +1,50 @@
+
+
+name:         xlafold
+license:      LGPL 3.0 or later
+license_file: LICENSE
+description:  'Quickly fold protein from a sequence on GPU or CPU'
+download_url: https://github.com/jkwoods/OpenMMPlayground
+url:          https://github.com/jkwoods/OpenMMPlayground
+released:     false
+
+authors:
+  - Jess Woods
+  - John Ossyra
+
+emails:
+  - JESSEMAIL@something.com
+  - jrossyra@gmail.com
+
+long_description: |
+  xlafold takes a protein sequence, <calculates restraints>, and 
+  employs either Amber or OpenMM to fold from a linear structure
+  using implicit solvent and the restraints.
+
+classifiers: |
+  Development Status :: 3 - Alpha
+  Intended Audience :: Science/Research
+  Intended Audience :: Developers
+  License :: OSI Approved :: GNU Lesser General Public License v3.0 or later (LGPLv3.0+)
+  Programming Language :: Python
+  Programming Language :: Python :: 3
+  Topic :: Scientific/Engineering :: Bio-Informatics
+  Topic :: Scientific/Engineering :: Chemistry
+  Operating System :: POSIX
+  Operating System :: Unix
+  Operating System :: MacOS
+
+packages:
+  - xlafold
+  - xlafold.omm
+
+platforms:
+  - Linux
+  - Mac OS X
+
+#scripts:
+##  - adaptivemd/scripts/adaptivemdworker
+#
+#install_requires:
+#  # verify YAML via setup.py
+#  - numpy

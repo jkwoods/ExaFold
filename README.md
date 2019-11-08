@@ -1,13 +1,23 @@
 # OpenMMPlayground
 
-**To Run:**
-1. Edit fold_parameters.json with your parameters (explaination below)
-2. Run:
+**Install:**
 ```
-python set_up.py
+git clone https://github.com/jkwoods/OpenMMPlayground
+cd OpenMMPlayground
+git checkout devel
+python setup.py [ install || develop ]
 ```
 
-**Input to the Program:  fold_parameters.json**
+**To Run:**
+1. Edit fold_parameters.json with your parameters (explaination below)
+2. Run a test:
+
+```
+cd tests
+python run-test-omm_input.py
+```
+
+**Input to the Program:  fold_parameters.yaml**
 1. name of the protein (or run) as a string; this is just to identify output files, so you can really use any string you want
 2. Jinbo Xu's txt file (input.seq) with the sequence in three letter chunks (i.e., "MET PHE ILE GLU ...")
 3. Jinbo Xu's Distance Restraints list (contact.tbl)
