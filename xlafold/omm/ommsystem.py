@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from simtk.openmm.app import AmberPrmtopFile, AmberInpcrdFile
+from simtk.openmm.app import AmberPrmtopFile, AmberInpcrdFile, NoCutoff
 from simtk.openmm import XmlSerializer
 
 
@@ -20,23 +20,32 @@ class OmmSystem(object):
     Methods
     -------
     """
-    def __init__(self, ff_type, **kwargs):
-        if ff_type.lower() == "amber":
-            prmtop = AmberPrmtopFile(kwargs["topology"])
-            inpcrd = AmberInpcrdFile(kwargs["coordinates"])
-            self.system = prmtop.createSystem(nonbondedMethod=NoCutoff)
+    def __init__(self, ff_type=None, system_file=None, **kwargs):
+        if ff_type is not None:
+            if ff_type.lower() == "amber":
+                prmtop = AmberPrmtopFile(kwargs["topology"])
+                inpcrd = AmberInpcrdFile(kwargs["coordinates"])
+                self.system = prmtop.createSystem(nonbondedMethod=NoCutoff)
+
+        elif system_file is not None:
+            self.load_xml(system_file)
+
+        else:
+            # Inspect and set ff_type
+            # TODO ff_type as instance attribute
+            pass
 
     def save_xml(self, system_file):
         with open(system_file, "w") as f:
             f.write(XmlSerializer.serialize(self.system))
 
-    def load_xml(self.xml_file):
+    def load_xml(self, system_file):
         # TODO file access control
         attempt = 0
         retries = 10
         while True:
             try:
-                with open(xml_file) as f:
+                with open(system_file) as f:
                     self.system = XmlSerializer.deserialize(f.read())
                 return
     

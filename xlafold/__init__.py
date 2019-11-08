@@ -1,6 +1,6 @@
 
-from read_restraints import *
-from omm import *
+from .read_restraints import *
+from .omm import *
 
 
 from ._version import get_versions

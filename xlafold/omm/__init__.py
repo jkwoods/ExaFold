@@ -1,2 +1,2 @@
 
-from ommsystem import *
+from .ommsystem import *

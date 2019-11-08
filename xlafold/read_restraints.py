@@ -11,7 +11,7 @@ import parse
 OMM_RESTRAINT_types   = ["distance","torsion"]
 OMM_RESTRAIN_distance = "HarmonicBondForce"
 OMM_RESTRAIN_torsion  = "HarmonicTorsionForce"
-TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
+TEMPLATE_distance     = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
 #TEMPLATE_torsion  = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
 
 
@@ -76,9 +76,14 @@ def parse_distance_restraints(fileobj):
     atom_pairs     = list()
     restraint_mins = list()
 
-    for line in f:
-        R1, A1, R2, A2, MIN, L, U = parse.parse(TEMPLATE_distance, line)
-        atom_pairs.append([(int(R1),A1),(int(R2),A2)])
-        restraint_mins.append(float(MIN))
+    _parse_fields_ = ["R1", "A1", "R2", "A2", "MIN", "L", "U"]
+
+    for line in fileobj:
+        parsed = parse.parse(TEMPLATE_distance, line)
+        if all([pf in parsed for pf in _parse_fields_]):
+            R1, A1, R2, A2, MIN, L, U = [parsed[pf] for pf in _parse_fields_]
+
+            atom_pairs.append([(int(R1),A1),(int(R2),A2)])
+            restraint_mins.append(float(MIN))
 
     return atom_pairs, restraint_mins
