@@ -3,7 +3,7 @@
 from time import sleep
 
 from simtk.openmm.app import AmberPrmtopFile, AmberInpcrdFile, NoCutoff
-from simtk.openmm import XmlSerializer
+from simtk.openmm import XmlSerializer, app
 
 
 __all__ = ["OmmSystem"]
@@ -20,6 +20,7 @@ class OmmSystem(object):
     Methods
     -------
     """
+
     def __init__(self, ff_type=None, system_file=None, **kwargs):
         if ff_type is not None:
             if ff_type.lower() == "amber":
@@ -35,14 +36,43 @@ class OmmSystem(object):
             # TODO ff_type as instance attribute
             pass
 
+
+    def initialize_restraint_force(self, restraint_definition, atom_groups=list(), parameters=list()):
+        restraint_type    = list(restraint_definition)[0]
+        restraint_formula = restraint_definition.get("formula", list())
+        restraint_pars    = restraint_definition.get("parameters", list())
+        restraint_method  = restraint_definition.get("restraint", dict())
+
+        restraint_force   = getattr(app, restraint_type)(*restraint_formula)
+    
+        for method,parameter in restraint_pars:
+            getattr(restraint_force, method)(parameter)
+
+        self._restraints.update(
+            {restraint_type : [restraint_force, restraint_method]}
+        )
+
+        if atom_groups and parameters:
+            self.add_restraint_groups(restraint_type, atom_groups, parameters)
+
+
+    def add_restraints(self, restraint_type, atom_groups, parameters):
+        restraint_force, restraint_method = self._restraints[restraint_type]
+
+        for restraint in zip(atom_groups, parameters):
+            rargs = *restraint[0]
+            rargs.append(restraint[1])
+            restraint_force, restraint_method)(*rargs)
+
+
     def save_xml(self, system_file):
         with open(system_file, "w") as f:
             f.write(XmlSerializer.serialize(self.system))
 
+
     def load_xml(self, system_file):
-        # TODO file access control
         attempt = 0
-        retries = 10
+        retries = 20
         while True:
             try:
                 with open(system_file) as f:
