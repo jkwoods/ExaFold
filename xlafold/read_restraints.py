@@ -8,9 +8,24 @@ import parse
 
 # TODO expand to list of options
 #      for restraint implementation
+# TODO inherit setting from user level
+#      so these can be set
 OMM_RESTRAINT_types   = ["distance","torsion"]
-OMM_RESTRAIN_distance = "HarmonicBondForce"
-OMM_RESTRAIN_torsion  = "HarmonicTorsionForce"
+OMM_RESTRAIN_distance = dict(
+    CustomBondForce={
+        formula=["-k*(r-r0)^2"],
+        parameters=[
+            # MUST BE 2-tuple
+            dict(addPerBondParameter="k"),
+            dict(addPerBondParameter="r0"),
+        ],
+        # This case has:
+        # 1 restraint ~ [2 atoms, 2 parameters]
+        restraint=dict(addBond=[2,2])
+    },
+)
+
+OMM_RESTRAIN_torsion  = "CustomTorsionForce"
 TEMPLATE_distance     = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
 #TEMPLATE_torsion  = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
 
@@ -36,12 +51,12 @@ def read_restraints(filename, restraint_type):
 
     if restraint_type == "distance":
         return {
-            OMM_RESTRAIN_distance : parse_distance_restraints(filename)
+            list(OMM_RESTRAIN_distance)[0] : parse_distance_restraints(filename)
         }
 
     elif restraint_type == "torsion":
         return {
-            OMM_RESTRAIN_torsion  : parse_torsion_restraints(filename)
+            list(OMM_RESTRAIN_torsion)[0]  : parse_torsion_restraints(filename)
         }
 
     else:
