@@ -5,7 +5,7 @@ __all__ = ["read_restraints"]
 from pathlib import Path
 import parse
 
-from .definitions import *
+from .definitions import OMM_RESTRAINT_types
 
 
 def read_restraints(filename, restraint_type):
@@ -28,14 +28,10 @@ def read_restraints(filename, restraint_type):
     assert restraint_type in OMM_RESTRAINT_types
 
     if restraint_type == "distance":
-        return {
-            list(OMM_RESTRAIN_distance)[0] : parse_distance_restraints(filename)
-        }
+        return parse_distance_restraints(filename)
 
     elif restraint_type == "torsion":
-        return {
-            list(OMM_RESTRAIN_torsion)[0]  : parse_torsion_restraints(filename)
-        }
+        return parse_torsion_restraints(filename)
 
     else:
         # restraint types list has type that isn't checked for
@@ -66,9 +62,8 @@ def parse_distance_restraints(fileobj):
       > list1: pairs of particles
       > list2: minimum position
     """
-    atom_pairs     = list()
-    restraint_mins = list()
-
+    interactions = list()
+    TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
     _parse_fields_ = ["R1", "A1", "R2", "A2", "MIN", "L", "U"]
 
     for line in fileobj:
@@ -76,7 +71,10 @@ def parse_distance_restraints(fileobj):
         if all([pf in parsed for pf in _parse_fields_]):
             R1, A1, R2, A2, MIN, L, U = [parsed[pf] for pf in _parse_fields_]
 
-            atom_pairs.append([(int(R1),A1),(int(R2),A2)])
-            restraint_mins.append(float(MIN))
+            interactions.append([(int(R1),A1),(int(R2),A2), float(MIN)])
 
-    return atom_pairs, restraint_mins
+    return interactions
+
+#TEMPLATE_torsion  = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
+#    "TEMPLATE_torsion",
+

@@ -3,10 +3,6 @@ __all__ = [
     "OMM_RESTRAINT_types",
     "OMM_RESTRAIN_distance",
     "OMM_RESTRAIN_torsion",
-
-    "TEMPLATE_distance",
-#    "TEMPLATE_torsion",
-
 ]
 
 
@@ -41,6 +37,4 @@ OMM_RESTRAIN_distance = dict(
 )
 
 OMM_RESTRAIN_torsion  = "CustomTorsionForce"
-TEMPLATE_distance     = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
-#TEMPLATE_torsion  = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
 
