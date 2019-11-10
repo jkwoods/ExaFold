@@ -3,7 +3,7 @@
 from time import sleep
 
 from simtk.openmm.app import AmberPrmtopFile, AmberInpcrdFile, NoCutoff
-from simtk.openmm import XmlSerializer, app
+from simtk import openmm
 
 
 __all__ = ["OmmSystem"]
@@ -53,15 +53,22 @@ class OmmSystem(object):
 
 
     def initialize_restraint_force(self, restraint_definition, atom_groups=list(), parameters=list()):
-        restraint_type    = list(restraint_definition)[0]
-        restraint_formula = restraint_definition.get("formula", list())
-        restraint_pars    = restraint_definition.get("parameters", list())
-        restraint_method  = restraint_definition.get("restraint", dict())
+        assert len(restraint_definition) == 1
+        assert isinstance(restraint_definition, dict)
 
-        restraint_force   = getattr(app, restraint_type)(*restraint_formula)
+        # PROGRAMMATIC use of the dict fields happens here
+        restraint_type    = list(restraint_definition)[0]
+        rd                = restraint_definition[restraint_type]
+        restraint_formula = rd.get("formula", list())
+        restraint_pars    = rd.get("parameters", list())
+        restraint_method  = rd.get("restraint", dict())
+
+        restraint_force   = getattr(openmm, restraint_type)(*restraint_formula)
     
-        for method,parameter in restraint_pars:
-            getattr(restraint_force, method)(parameter)
+        for mpar in restraint_pars:
+            assert len(mpar) == 1
+            method,parameter = next(iter(mpar.items()))
+            getattr(restraint_force, method)(*parameter)
 
         self._restraints.update(
             {restraint_type : [restraint_force, restraint_method]}
@@ -72,6 +79,10 @@ class OmmSystem(object):
 
 
     def add_restraints(self, restraint_type, atom_groups, parameters):
+
+        assert isinstance(atom_groups, (list, tuple))
+        assert isinstance(parameters, (list, tuple))
+
         restraint_force, restraint_method = self._restraints[restraint_type]
 
         for restraint in zip(atom_groups, parameters):
@@ -82,7 +93,7 @@ class OmmSystem(object):
 
     def save_xml(self, system_file):
         with open(system_file, "w") as f:
-            f.write(XmlSerializer.serialize(self.system))
+            f.write(openmm.XmlSerializer.serialize(self.system))
 
 
     def load_xml(self, system_file):
@@ -91,7 +102,7 @@ class OmmSystem(object):
         while True:
             try:
                 with open(system_file) as f:
-                    self.system = XmlSerializer.deserialize(f.read())
+                    self.system = openmm.XmlSerializer.deserialize(f.read())
                 return
     
             except ValueError as e:
