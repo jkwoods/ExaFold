@@ -21,7 +21,22 @@ class OmmSystem(object):
     -------
     """
 
+    @property
+    def restraints(self):
+        """dict with the API calls, atom groups and force
+        parameters needed to generate all the given restraints
+        """
+        return self._restraints
+
+
     def __init__(self, ff_type=None, system_file=None, **kwargs):
+
+        # This dict will store the API calls
+        # along with atom groups and force
+        # parameters needed to generate all
+        # the given restraints
+        self._restraints = dict()
+
         if ff_type is not None:
             if ff_type.lower() == "amber":
                 prmtop = AmberPrmtopFile(kwargs["topology"])
@@ -60,9 +75,9 @@ class OmmSystem(object):
         restraint_force, restraint_method = self._restraints[restraint_type]
 
         for restraint in zip(atom_groups, parameters):
-            rargs = *restraint[0]
+            rargs = restraint[0]
             rargs.append(restraint[1])
-            restraint_force, restraint_method)(*rargs)
+            getattr(restraint_force, restraint_method)(*rargs)
 
 
     def save_xml(self, system_file):
