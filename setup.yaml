@@ -4,8 +4,8 @@ name:         xlafold
 license:      LGPL 3.0 or later
 license_file: LICENSE
 description:  'Quickly fold protein from a sequence on GPU or CPU'
-download_url: https://github.com/jkwoods/OpenMMPlayground
-url:          https://github.com/jkwoods/OpenMMPlayground
+download_url: https://github.com/jkwoods/ExaFold
+url:          https://github.com/jkwoods/ExaFold
 released:     false
 
 authors:
