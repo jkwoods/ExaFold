@@ -4,12 +4,14 @@ Fast GPU-based protein folding simulations that run from only a protein sequence
 to fold the protein.
 
 **Pre-install**
-If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python version.
+If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python distribution.
 Here is a lightweight version that will get you started:
 ```bash
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 rm Miniconda3-latest-Linux-x86_64.sh
+# If you choose to keep your bashrc clean, add the conda/bin to PATH
+export PATH="$(pwd)/miniconda3/bin:$PATH"
 ```
 
 **Install:**
