@@ -4,19 +4,30 @@ Fast GPU-based protein folding simulations that run from only a protein sequence
 to fold the protein.
 
 **Pre-install**
-If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python version.
+If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python distribution.
 Here is a lightweight version that will get you started:
 ```bash
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 rm Miniconda3-latest-Linux-x86_64.sh
+
+# If you choose to keep your bashrc clean, add the conda/bin to PATH
+export PATH="$(pwd)/miniconda3/bin:$PATH"
+
+# One dependency for the installation itself
+conda install pyyaml
 ```
 
 **Install:**
+If you are on OLCF Summit (or any other PPC64LE machine) we will do some funny install methods. A custom fork of 
+MDTraj will be installed from source, side-by-side with your clone of this repository. This fork gives the
+necessary MDTraj functionality without any architecture-specific components (so you can't use any geometric
+calculations essentially).
 ```bash
 git clone https://github.com/jkwoods/exafold
 cd exafold
 git checkout devel
+
 # choose develop option if you want to
 # make and test source changes
 python setup.py [ install || develop ]
