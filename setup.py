@@ -2,6 +2,8 @@
 import sys
 import versioneer
 
+from platform import processor
+
 try:
     from setuptools import setup
 
@@ -72,11 +74,22 @@ def build_keyword_dictionary(prefs):
 # load settings from setup.yaml
 with open('setup.yaml') as f:
     yaml_string = ''.join(f.readlines())
-    preferences = yaml.load(yaml_string)
+    preferences = yaml.safe_load(yaml_string)
 
 
 setup_args = build_keyword_dictionary(preferences)
 setup_args['version'] = versioneer.get_version()
 setup_args['cmdclass'] = versioneer.get_cmdclass()
+
+myarch = processor()
+if "ppc64" in myarch:
+    # Dirty solution here...
+    import subprocess, shlex, os
+    os.chdir("..")
+    subprocess.call(shlex.split("git clone https://github.com/jrossyra/mdtraj-nogeo"))
+    os.chdir("mdtraj-nogeo")
+    subprocess.call(shlex.split("pip install -e ."))
+    os.chdir("../exafold")
+
 
 setup(**setup_args)

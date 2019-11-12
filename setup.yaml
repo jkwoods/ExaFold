@@ -17,7 +17,7 @@ emails:
   - jrossyra@gmail.com
 
 long_description: |
-  xlafold takes a protein sequence, <calculates restraints>, and 
+  ExaFold takes a protein sequence, <calculates restraints via contact estimates>, and 
   employs either Amber or OpenMM to fold from a linear structure
   using implicit solvent and the restraints.
 
@@ -35,8 +35,9 @@ classifiers: |
   Operating System :: MacOS
 
 packages:
-  - xlafold
-  - xlafold.omm
+  - exafold
+  - exafold.mdsystem
+  - exafold.restraints
 
 platforms:
   - Linux
@@ -45,6 +46,8 @@ platforms:
 #scripts:
 ##  - adaptivemd/scripts/adaptivemdworker
 #
-#install_requires:
-#  # verify YAML via setup.py
-#  - numpy
+install_requires:
+  # verify YAML via setup.py
+  - parse
+  - mdtraj
+  - openmm
