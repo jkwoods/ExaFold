@@ -86,6 +86,7 @@ if "ppc64" in myarch:
     # Dirty solution here...
     import subprocess, shlex, os
     os.chdir("..")
+    subprocess.call(shlex.split("conda install cython scipy"))
     subprocess.call(shlex.split("git clone https://github.com/jrossyra/mdtraj-nogeo"))
     os.chdir("mdtraj-nogeo")
     subprocess.call(shlex.split("pip install -e ."))

@@ -1,6 +1,6 @@
 
 
-name:         xlafold
+name:         exafold
 license:      LGPL 3.0 or later
 license_file: LICENSE
 description:  'Quickly fold protein from a sequence on GPU or CPU'

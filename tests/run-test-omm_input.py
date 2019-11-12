@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from xlafold import (
+from exafold import (
     OmmSystem, read_restraints, OMM_RESTRAIN_distance
 )
 from test_configuration import (
@@ -34,7 +34,7 @@ f_r = 2.0
 
 #---------- APPLY Restraints ------------------------------#
 #  - we select a restraint force implementation from
-#    list of those defined in the `xlafold` package
+#    list of those defined in the `exafold` package
 restraint_name = "simpleharmonic_customforce"
 this_restraint = OMM_RESTRAIN_distance[restraint_name]
 restraint_type = list(this_restraint)[0]
