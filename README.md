@@ -13,6 +13,10 @@ rm Miniconda3-latest-Linux-x86_64.sh
 ```
 
 **Install:**
+If you are on OLCF Summit (or any other PPC64LE machine) we will do some funny install methods. A custom fork of 
+MDTraj will be installed from source, side-by-side with your clone of this repository. This fork gives the
+necessary MDTraj functionality without any architecture-specific components (so you can't use any geometric
+calculations essentially).
 ```bash
 git clone https://github.com/jkwoods/exafold
 cd exafold
