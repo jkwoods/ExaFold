@@ -10,8 +10,12 @@ Here is a lightweight version that will get you started:
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 rm Miniconda3-latest-Linux-x86_64.sh
+
 # If you choose to keep your bashrc clean, add the conda/bin to PATH
 export PATH="$(pwd)/miniconda3/bin:$PATH"
+
+# One dependency for the installation itself
+conda install pyyaml
 ```
 
 **Install:**
@@ -23,6 +27,7 @@ calculations essentially).
 git clone https://github.com/jkwoods/exafold
 cd exafold
 git checkout devel
+
 # choose develop option if you want to
 # make and test source changes
 python setup.py [ install || develop ]
