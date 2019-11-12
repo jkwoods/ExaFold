@@ -42,8 +42,8 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = "v"
-    cfg.parentdir_prefix = "xlafold-"
-    cfg.versionfile_source = "xlafold/_version.py"
+    cfg.parentdir_prefix = "exafold-"
+    cfg.versionfile_source = "exafold/_version.py"
     cfg.verbose = False
     return cfg
 

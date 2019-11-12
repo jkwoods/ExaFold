@@ -1,2 +1,2 @@
 include versioneer.py
-include xlafold/_version.py
+include exafold/_version.py
