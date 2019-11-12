@@ -3,8 +3,17 @@
 Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed
 to fold the protein.
 
-**Install:**
+**Pre-install**
+If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python version.
+Here is a lightweight version that will get you started:
+```bash
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+rm Miniconda3-latest-Linux-x86_64.sh
 ```
+
+**Install:**
+```bash
 git clone https://github.com/jkwoods/exafold
 cd exafold
 git checkout devel
@@ -22,7 +31,7 @@ Packages:
 
 **To Run:**
 1. Run a test:
-```
+```bash
 # from ExaFold top directory
 cd tests
 python run-test-omm_input.py
@@ -36,6 +45,12 @@ python run-test-omm_input.py
    - `my_parameters.yaml` with paths to structure, restraint files
 2. From protein sequence
    - `my_parameters.yaml` with a protein sequence or fasta file
+
+**Example API calls**
+user configuration
+exafold.mdsystem.ommsystem
+exafold.restraints.reader
+exafold.restraints.definitions
 
 **Notes**
 1. See previous repos and migrate relevant stuff
