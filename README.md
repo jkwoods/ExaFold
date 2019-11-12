@@ -2,8 +2,8 @@
 
 **Install:**
 ```
-git clone https://github.com/jkwoods/OpenMMPlayground
-cd OpenMMPlayground
+git clone https://github.com/jkwoods/ExaFold
+cd ExaFold
 git checkout devel
 python setup.py [ install || develop ]
 ```
