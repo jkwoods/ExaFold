@@ -1,33 +1,58 @@
-# OpenMMPlayground
+## ExaFold
+
+Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed
+to fold the protein.
 
 **Install:**
 ```
-git clone https://github.com/jkwoods/ExaFold
-cd ExaFold
+git clone https://github.com/jkwoods/exafold
+cd exafold
 git checkout devel
+# choose develop option if you want to
+# make and test source changes
 python setup.py [ install || develop ]
 ```
 
-**To Run:**
-1. Edit fold_parameters.json with your parameters (explaination below)
-2. Run a test:
+**Requirements:**
+Python 3
+Packages:
+ - parse
+ - OpenMM 7.3+
+ - MDTraj 1.9.3+
 
+**To Run:**
+1. Run a test:
 ```
+# from ExaFold top directory
 cd tests
 python run-test-omm_input.py
 ```
+2. (incomplete) Edit `my_parameters.yaml` with your parameters in a working directory you set up (explaination below)
+2.1. Run from structure + restraintlist
+2.2. (incomplete) Run from protein sequence
 
-**Input to the Program:  fold_parameters.yaml**
-1. name of the protein (or run) as a string; this is just to identify output files, so you can really use any string you want
-2. Jinbo Xu's txt file (input.seq) with the sequence in three letter chunks (i.e., "MET PHE ILE GLU ...")
-3. Jinbo Xu's Distance Restraints list (contact.tbl)
-4. Jinbo Xu's Torsion Restraints list (dihedral.tbl)
-5. List of Force Constants for the distance restraints as floats (in kcal/mol·Angstroms) [NOT CURRENTLY USED]
-6. List of Force Constants for the torsion restraints as floats (in in 70 kcal/mol·rad) [NOT CURRENTLY USED]
-7. List of (highest) Temperatures for the simulated annealing cycles as floats (in K) [NOT CURRENTLY USED]
-8. Number of simulated annealing cycles to run (int) [NOT CURRENTLY USED]
-9. The path to the Amber forcefield, if you would like to change the forcefield; will vary depending on where your AmberTools package is
-
+**Input to the Program:**
+1. From structure + restraint list
+   - `my_parameters.yaml` with paths to structure, restraint files
+2. From protein sequence
+   - `my_parameters.yaml` with a protein sequence or fasta file
 
 **Notes**
-1. need to figure out Jinbo's other (bad python output) files
+1. See previous repos and migrate relevant stuff
+
+The code is currently under development. A full version will:
+  - [partial] take a protein sequence for input via a config file
+  - [partial] create a linear protein structure for this sequence
+  - [outside] calculate distances used as restraints to help the protein fold correctly
+  - [partial] calculate distances from secondary structure prediction
+  - [v1 done] read a set of distance restraints
+  - [v1 done] build a simulation system and apply restraints
+  - [nostart] run a swarm of protein folding walkers
+  - [nostart] prune and move walkers to more effectively fold the protein
+
+Short-term Roadmap
+v0.1  restraints are read and applied to an OpenMM system
+v0.2  hook the sequence to PDB/restraints upstream
+v0.x1 launches HPC job with swarm of folding walkers
+v0.x2 prune and move walkers
+v0.3  updates to config for more control of workflow
