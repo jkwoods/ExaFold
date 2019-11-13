@@ -14,13 +14,67 @@ class OmmSystem(object):
     """OmmSystem is a wrapper around the OpenMM System object
     that does a bunch of simple stuff for us with simpler API
 
+    Initialize from Forcefield-specific input or a previously
+    saved OpenMM 'system.xml'-type file. In either case, some
+    input must be given to initialze the parameters and coords
+    for the system. 
+
+    Currently implemented initialize formats
+      - Amber
+    TODO
+      - Gromacs
+      - Charmm
+      - strings giving OpenMM-packaged ff xmls
+    TODO move useful bits of John's setupsystem functionality
+    TODO move useful bits of John's runopenmm functionality
+
     Attributes
     ----------
-    system :: OpenMM `system` instance
+    system   :: OpenMM `System` instance
+    topology :: MTraj `Topology` instance
+    restraints :: `dict` of restraint forces
 
     Methods
     -------
+    apply_restraint_force ::
+        take a configured restraint force and add it
+        to the `system`
+
+    initialize_restraint_force ::
+        specify a restraint definition to load for the
+        system. after initializing, interactions can
+        be added restraint using this force with the
+        method `add_restraint_interactions`
+
+    add_restraint_interactions ::
+        give list of interactions each, used to create
+        a restraint instance, specifying the atom group
+        and the restraint parameters to apply to the
+        group
+
+    setup_simulation ::
+        create a `simulation` object using the current
+        `system` state. If a restraint force has been
+        configured AND applied, these interactions will
+        be included in the simulation
+
+    save_pdb :: probably doesn't work at the moment
+    save_xml :: save `system` with `XmlSerializer`
+    load_xml :: load `system` with `XmlSerializer`
     """
+
+    def setup_simulation(self, integrator_definition):
+        pass
+
+    @property
+    def initial_positions(self):
+        """Retrieve the initial positions from the system
+        initializer objects
+        """
+        if hasattr(self._positions, "positions"):
+            return self._positions.positions
+        else:
+            return list()
 
     @property
     def restraints(self):
@@ -31,6 +85,22 @@ class OmmSystem(object):
 
 
     def __init__(self, ff_type=None, system_file=None, **kwargs):
+        """Two pathways can be used starting from FF-specific files
+        or OpenMM XML system. Additional kwargs are variously used
+        depending on the forcefield / pathway that was chosen.
+
+        supported ff_type
+        -----------------
+        amber :: give a prmtop and an inpcrd
+        openmm :: give an XML file for the system
+
+        supported kwargs
+        ----------------
+        topology :: system-specific or not depending on FF
+        coordinates :: source of coordinates for initial state
+        """
+
+        assert (ff_type is None) or (system_file is None)
 
         # This dict will store the API calls
         # along with atom groups and force
@@ -48,6 +118,7 @@ class OmmSystem(object):
                 inpcrd = AmberInpcrdFile(coordfile)
                 self.system = prmtop.createSystem(nonbondedMethod=NoCutoff)
                 self._topology = Topology.from_openmm(prmtop.topology)
+                self._positions = inpcrd
 
         elif system_file is not None:
             self.load_xml(system_file)
@@ -164,6 +235,12 @@ class OmmSystem(object):
             rargs.append(parameters)
 
             getattr(restraint_force, interaction_method)(*rargs)
+
+
+    def apply_restraint_force(self, restraint_type):
+        self.system.addForce(
+            self._restraints[restraint_type][0]
+        )
 
 
     def save_pdb(self, pdb_file):
