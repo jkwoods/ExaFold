@@ -7,7 +7,7 @@ to fold the protein.
 If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python distribution.
 If you are installing on a cluster or HPC, you will likely need to specify a non-standard miniconda
 directory to use the software to avoid permissions issues. For example on OLCF resources such as Summit,
-a good place to install software is `/ccs/proj/<projID>/miniconda3.
+a good place to install software is `/ccs/proj/<projID>/miniconda3`.
 Here is a lightweight version that will get you started:
 ```bash
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -63,10 +63,10 @@ python run-test-omm_input.py
    - `my_parameters.yaml` with a protein sequence or fasta file
 
 **Example API calls**
-user configuration
-exafold.mdsystem.ommsystem
-exafold.restraints.reader
-exafold.restraints.definitions
+user configuration<br />
+exafold.mdsystem.ommsystem<br />
+exafold.restraints.reader<br />
+exafold.restraints.definitions<br />
 
 **Notes**
 1. See previous repos and migrate relevant stuff
@@ -81,9 +81,9 @@ The code is currently under development. A full version will:
   - [nostart] run a swarm of protein folding walkers
   - [nostart] prune and move walkers to more effectively fold the protein
 
-Short-term Roadmap
-v0.1  restraints are read and applied to an OpenMM system
-v0.2  hook the sequence to PDB/restraints upstream
-v0.x1 launches HPC job with swarm of folding walkers
-v0.x2 prune and move walkers
-v0.3  updates to config for more control of workflow
+Short-term Roadmap<br />
+v0.1  restraints are read and applied to an OpenMM system<br />
+v0.2  hook the sequence to PDB/restraints upstream<br />
+v0.x1 launches HPC job with swarm of folding walkers<br />
+v0.x2 prune and move walkers<br />
+v0.3  updates to config for more control of workflow<br />
