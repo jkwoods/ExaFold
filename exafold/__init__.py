@@ -1,6 +1,7 @@
 
 from .restraints import *
 from .mdsystem import *
+from .integrator import *
 
 
 from ._version import get_versions

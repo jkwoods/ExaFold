@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from exafold import (
-    OmmSystem, read_restraints, OMM_RESTRAIN_distance
+    OmmSystem, OmmSimulation, read_restraints, OMM_RESTRAIN_distance, OMM_INTEGRATOR
 )
 from test_configuration import (
     input_prefix, system_file, restraint_prefix
@@ -41,5 +41,19 @@ restraint_type = list(this_restraint)[0]
 
 ommsystem.initialize_restraint_force(this_restraint)
 ommsystem.add_restraint_interactions(restraint_type, distance_restraints)
+ommsystem.apply_restraint_force(restraint_type)
 
+#---------- RUN Simulation ------------------------------#
+# choose integrator and steps
+steps = 50000
+step_size = 0.002
+temperature = 600
 
+integrator_name = "langevin"
+integrator_definition = OMM_INTEGRATOR[integrator_name]
+integrator_definition
+
+ommsimulation = ommsystem.setup_simulation(integrator_definition, platform, steps)
+ommsimulation.run(simulation_steps=steps)
+
+print("working")

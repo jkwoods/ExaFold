@@ -63,8 +63,6 @@ class OmmSystem(object):
     load_xml :: load `system` with `XmlSerializer`
     """
 
-    def setup_simulation(self, integrator_definition):
-        pass
 
     @property
     def initial_positions(self):
@@ -242,6 +240,30 @@ class OmmSystem(object):
             self._restraints[restraint_type][0]
         )
 
+
+    def initialize_integrator(integrator_definition):
+        #definition is type and numbers
+
+        integrator = LangevinIntegrator(
+            100*unit.kelvin, 1/unit.picosecond, 0.002*unit.picoseconds
+        )
+
+        #TODO
+        return integrator
+
+
+    def setup_simulation(self, integrator_definition, platform, steps):
+        #build integrator
+        integrator = initialize_integrator(integrator_definition)
+
+        #build simulation
+        simulation = OmmSimulation(
+            omm_system=self,
+            integrator=integrator,
+            platform=platform,
+        )
+
+        return simulation
 
     def save_pdb(self, pdb_file):
         PDBFile.write(pdb_file, self.topology)
