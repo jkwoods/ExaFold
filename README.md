@@ -3,7 +3,7 @@
 Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed
 to fold the protein.
 
-**Pre-install**
+**Pre-install**<br />
 If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python distribution.
 If you are installing on a cluster or HPC, you will likely need to specify a non-standard miniconda
 directory to use the software to avoid permissions issues. For example on OLCF resources such as Summit,
@@ -22,7 +22,7 @@ export PATH="$(pwd)/miniconda3/bin:$PATH"
 conda install pyyaml
 ```
 
-**Install:**
+**Install:**<br />
 If you are on OLCF Summit (or any other PPC64LE machine) we will do some funny install methods. A custom fork of 
 MDTraj will be installed from source, side-by-side with your clone of this repository. This fork gives the
 necessary MDTraj functionality without any architecture-specific components (so you can't use any geometric
@@ -38,8 +38,8 @@ git checkout devel
 python setup.py [ install || develop ]
 ```
 
-**Requirements:**
-Python 3
+**Requirements:**<br />
+Python 3<br />
 Packages:
  - parse
  - OpenMM 7.3+
@@ -62,7 +62,7 @@ python run-test-omm_input.py
 2. From protein sequence
    - `my_parameters.yaml` with a protein sequence or fasta file
 
-**Example API calls**
+**Example API calls**<br />
 user configuration<br />
 exafold.mdsystem.ommsystem<br />
 exafold.restraints.reader<br />
