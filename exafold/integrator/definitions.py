@@ -8,7 +8,7 @@ from openmmtools import integrators # some of these are in openmmtools.integrato
 
 
 # TODO expand to list of options
-# TODO enable user input for step size
+# TODO enable user input for step size, temp, etc
 
 # FUNCTIONAL Encoding dicts
 OMM_INTEGRATOR = dict(
