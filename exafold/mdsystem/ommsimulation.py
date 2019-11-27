@@ -14,11 +14,12 @@ class OmmSimulation(object):
             return self._simulation
 
 
-    def __init__(self, omm_system, integrator, platform):
+    def __init__(self, omm_system, integrator, platform, sim_steps):
         self._simulation = openmm.app.Simulation(ommm_system.topology, omm_system.system, integrator, platform)
 	self._simulation.context.setPositions(omm_system.initial_positions)
+	self.sim_steps = sim_steps
 
-    def run(statedata_freq=1000, structure_freq=10000, simulation_steps=50000, simulation_file="simulation.pdb", tag=""):
+    def run(statedata_freq=1000, structure_freq=10000, simulation_steps=self.sim_steps, simulation_file="simulation.pdb", tag=""):
         self._simulation.minimizeEnergy()
 
         self._simulation.reporters.append(app.StateDataReporter(sys.stdout, statedata_freq, separator=" | ", step=True,
