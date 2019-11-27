@@ -45,14 +45,22 @@ class OmmSystem(object):
         system. after initializing, interactions can
         be added restraint using this force with the
         method `add_restraint_interactions`
-
+        
     add_restraint_interactions ::
         give list of interactions each, used to create
         a restraint instance, specifying the atom group
         and the restraint parameters to apply to the
-        group
+        group 
+       
+    initialize_integrator ::                                //TODO
+        specify an integrator definition to load for the
+        system. after initializing, parameters can
+        be set with `set_integrator_parameters`
 
-    setup_simulation ::
+    set_integrator_parameters ::                            //TODO
+        set time step, etc. for chosen integrator
+
+    setup_simulation ::                                     //TODO incorporate "current" "integrator"
         create a `simulation` object using the current
         `system` state. If a restraint force has been
         configured AND applied, these interactions will
@@ -80,7 +88,6 @@ class OmmSystem(object):
         parameters needed to generate all the given restraints
         """
         return self._restraints
-
 
     def __init__(self, ff_type=None, system_file=None, **kwargs):
         """Two pathways can be used starting from FF-specific files
@@ -144,6 +151,14 @@ class OmmSystem(object):
 
         else:
             return self._topology
+
+        
+    @property
+    def integrator(self): #integrator object attached to class
+        if not self._integrator:
+            return None
+        else:
+            return self._integrator
 
 
     def initialize_restraint_force(self, restraint_definition, interactions=list()):
@@ -251,16 +266,21 @@ class OmmSystem(object):
         #TODO
         return integrator
 
+    def set_integrator_parameters():
+        
+        
+        
 
-    def setup_simulation(self, integrator_definition, platform, steps):
-        #build integrator
-        integrator = initialize_integrator(integrator_definition)
-
+    def setup_simulation(self, platform, sim_steps):
+        if (self._integrator == None): #TODO make default
+        
+        
         #build simulation
         simulation = OmmSimulation(
             omm_system=self,
-            integrator=integrator,
+            integrator=#TODO,
             platform=platform,
+            sim_steps=sim_steps
         )
 
         return simulation
