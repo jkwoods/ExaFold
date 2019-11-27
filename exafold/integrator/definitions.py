@@ -17,18 +17,16 @@ OMM_INTEGRATOR = dict(
             units=[
                 u.kelvin,
                 1/u.picoseconds, #inverse picoseconds
-                0.002*u.picoseconds,
+                u.picoseconds,
             ]
         ),
     ),
 
     verlet=dict(
-        LangevinIntegrator=dict(
-            args=["100", "1", "0.002"], #temp, frictionCoeff, stepSize
+        VerletIntegrator=dict(
+            args=["0.002"], #only stepSize
             units=[
-                u.kelvin,
-                1/u.picoseconds, #inverse picoseconds
-                0.002*u.picoseconds,
+                u.picoseconds,
             ]
         ),
     
