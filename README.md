@@ -1,6 +1,6 @@
-# OpenMMPlayground
+# ExaFold
 
-**NOTE:** Please see devel branch for most recent working implementation.
+**NOTE:** This is older code, currently kept for reference. Please see devel branch for most recent working implementation.
 
 **To Run:**
 1. Edit fold_parameters.json with your parameters (explaination below)
