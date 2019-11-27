@@ -15,7 +15,7 @@ OMM_INTEGRATOR = dict(
     langevin=dict( #most used, might be too slow
         # length 1 dict w/name of OpenMM Integrator class
         LangevinIntegrator=dict(
-            args=["100", "1", "0.002"], #temp, frictionCoeff, stepSize
+            args=["100", "1", "0.002"], #temp, frictionCoeff, stepSize; TODO: we should define good defaults for all of these
             units=[
                 u.kelvin,
                 1/u.picoseconds, #inverse picoseconds
@@ -39,7 +39,9 @@ OMM_INTEGRATOR = dict(
         AMDIntegrator=dict( #supposedly very fast, might comprise accuracy
             args=["0.002", "-180590.8", "2721"], #stepSize, alpha, energy cutoff, where do these # come from? no idea
             units=[
-                u.picoseconds, #the other two parameters don't seem to have units
+                u.picoseconds, 
+                1,
+                1,#the other two parameters don't seem to have units
             ]
         ),
     
@@ -47,11 +49,15 @@ OMM_INTEGRATOR = dict(
     
     noseHoover=dict( #subclassed from CustomIntegrator in openmmtools, variation on verlet
         NoseHooverChainVelocityVerletIntegrator=dict(
-            args=["300", "50", "0.001", "10", "5", "5"], #system (not listed), temperature, collision_frequency, timestep, chain_length, num_mts, num_yoshidasuzuki
+            args=["300", "50", "0.001", "10", "5", "5"], #system (not listed-FIX), temperature, collision_frequency, timestep, chain_length, num_mts, num_yoshidasuzuki
             units=[
                 u.kelvin, #temp
                 1/u.picoseconds, #collision
                 u.picoseconds, #timestep
+                1,
+                1,
+                1,
+
             ]
         ),
     
