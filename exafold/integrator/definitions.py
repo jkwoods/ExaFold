@@ -6,12 +6,14 @@ __all__ = [
 from simtk import unit as u
 
 # TODO expand to list of options
+# TODO enable user input for step size
 
 # FUNCTIONAL Encoding dicts
 OMM_INTEGRATOR = dict(
     langevin=dict(
-        CustomBondForce=dict(
-            args=["100", "", ""], #temp, frictionCoeff, stepSize
+        # length 1 dict w/name of OpenMM Integrator class
+        LangevinIntegrator=dict(
+            args=["100", "1", "0.002"], #temp, frictionCoeff, stepSize
             units=[
                 u.kelvin,
                 1/u.picoseconds, #inverse picoseconds
@@ -20,7 +22,17 @@ OMM_INTEGRATOR = dict(
         ),
     ),
 
-    brownian=dict(), #etc. figure out which integrators are applicable
+    verlet=dict(
+        LangevinIntegrator=dict(
+            args=["100", "1", "0.002"], #temp, frictionCoeff, stepSize
+            units=[
+                u.kelvin,
+                1/u.picoseconds, #inverse picoseconds
+                0.002*u.picoseconds,
+            ]
+        ),
+    
+    ), # other applicable integrators ? TODO
 
 )
 
