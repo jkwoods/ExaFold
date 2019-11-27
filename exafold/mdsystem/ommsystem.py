@@ -33,6 +33,7 @@ class OmmSystem(object):
     system   :: OpenMM `System` instance
     topology :: MTraj `Topology` instance
     restraints :: `dict` of restraint forces
+    integrator :: OpenMM `Integrator` instance
 
     Methods
     -------
@@ -52,14 +53,13 @@ class OmmSystem(object):
         and the restraint parameters to apply to the
         group 
        
-    initialize_integrator ::                                //TODO
+    initialize_integrator ::
         specify an integrator definition to load for the
-        system. default parameters used to make integrator.
+        system. 
+        
+        default parameters used to make integrator.         //TODO - handle setting of parameters
         after initializing, parameters can be set with
         `set_integrator_parameters`
-
-    set_integrator_parameters ::                            //TODO
-        set time step, etc. for chosen integrator
 
     setup_simulation ::                                     //TODO incorporate "current" "integrator"
         create a `simulation` object using the current
@@ -262,36 +262,28 @@ class OmmSystem(object):
         assert len(integrator_definition) == 1
         assert isinstance(integrator_definition, dict)
 
-        #get our information
+        #get information
         integrator_title        = list(integrator_definition)[0]
         i_d                     = integrator_definition[integrator_title]
-        integrator_default_args = i_d.get("args", dict());
-        integrator_units        = i_d.get("units", dict());
+        integrator_default_args = i_d.get("args", list());
+        integrator_units        = i_d.get("units", list());
         
+        assert len(integrator_default_args) == len(integrator_units)
+        
+        integrator_args_list = [a*u for a,u in zip(integrator_default_args,integrator_units)]
         
         #make integrator
-        integrator              = getattr(openmm, integrator_title)(* ##list of (arguments * units)); //todo how do this?
-        
-        #integrator = LangevinIntegrator(
-        #    100*unit.kelvin, 1/unit.picosecond, 0.002*unit.picoseconds
-        #)
+        self._integrator              = getattr(openmm, integrator_title)(*integrator_args_list); #test
 
-        #TODO
-        return integrator
-
-    def set_integrator_parameters():
         
-        
-        
-
     def setup_simulation(self, platform, sim_steps):
-        if (self._integrator == None): #TODO make default
-        
+        if (self._integrator == None): #set a default if user doesn't set one
+            self._integrator = openmm.VerletIntegrator(0.002*u.picoseconds);
         
         #build simulation
         simulation = OmmSimulation(
             omm_system=self,
-            integrator=#TODO,
+            integrator=self._integrator,
             platform=platform,
             sim_steps=sim_steps
         )
