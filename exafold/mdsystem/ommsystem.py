@@ -54,8 +54,9 @@ class OmmSystem(object):
        
     initialize_integrator ::                                //TODO
         specify an integrator definition to load for the
-        system. after initializing, parameters can
-        be set with `set_integrator_parameters`
+        system. default parameters used to make integrator.
+        after initializing, parameters can be set with
+        `set_integrator_parameters`
 
     set_integrator_parameters ::                            //TODO
         set time step, etc. for chosen integrator
@@ -256,12 +257,24 @@ class OmmSystem(object):
         )
 
 
-    def initialize_integrator(integrator_definition):
-        #definition is type and numbers
+    def initialize_integrator(self, integrator_definition):
+        
+        assert len(integrator_definition) == 1
+        assert isinstance(integrator_definition, dict)
 
-        integrator = LangevinIntegrator(
-            100*unit.kelvin, 1/unit.picosecond, 0.002*unit.picoseconds
-        )
+        #get our information
+        integrator_title        = list(integrator_definition)[0]
+        i_d                     = integrator_definition[integrator_title]
+        integrator_default_args = i_d.get("args", dict());
+        integrator_units        = i_d.get("units", dict());
+        
+        
+        #make integrator
+        integrator              = getattr(openmm, integrator_title)(* ##list of (arguments * units)); //todo how do this?
+        
+        #integrator = LangevinIntegrator(
+        #    100*unit.kelvin, 1/unit.picosecond, 0.002*unit.picoseconds
+        #)
 
         #TODO
         return integrator
