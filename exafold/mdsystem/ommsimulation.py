@@ -5,6 +5,23 @@ from simtk import openmm
 __all__ = ["OmmSimulation"]
 
 class OmmSimulation(object):
+     """OmmSimulation is a wrapper around the OpenMM Simulation object
+
+    Initialized/returned by the OmmSystem class, acting as a factory. 
+
+    Attributes
+    ----------
+    simulation   :: OpenMM `Simulation` instance
+
+    Methods
+    -------
+    run ::
+        run simulation, doesn't need any new parameters
+	but will take them if user wants to change steps,
+	reporters, etc.
+
+
+    """
 
     @property
     def simulation(self):
