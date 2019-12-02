@@ -1,6 +1,7 @@
-**/*swp
-**/*swo
+**/*.swp
+**/*.swo
 
+**/*.pyc
 **/*__pycache__
 
 tests/omm_*
