@@ -1,4 +1,5 @@
 
+# TODO too ugly...
 __all__ = [
     "OMM_INTEGRATORS",
     "OMM_BAROSTATS",
