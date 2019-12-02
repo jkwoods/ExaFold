@@ -1,4 +1,9 @@
-## ExaFold
+
+# ExaFold
+
+Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed to fold the protein.
+
+**NOTE:** This is older code, currently kept for reference. Please see devel branch for most recent working implementation.
 
 Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed
 to fold the protein.
