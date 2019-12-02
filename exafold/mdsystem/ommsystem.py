@@ -61,7 +61,7 @@ class OmmSystem(object):
         after initializing, parameters can be set with
         `set_integrator_parameters`
 
-    setup_simulation ::                                     //TODO incorporate "current" "integrator"
+    setup_simulation ::
         create a `simulation` object using the current
         `system` state. If a restraint force has been
         configured AND applied, these interactions will
@@ -257,7 +257,7 @@ class OmmSystem(object):
         )
 
 
-    def initialize_integrator(self, integrator_definition):
+    def initialize_integrator(self, integrator_definition):  #TODO enable the setting of parameters (instead of defaults)
         
         assert len(integrator_definition) == 1
         assert isinstance(integrator_definition, dict)
