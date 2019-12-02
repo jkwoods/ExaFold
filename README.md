@@ -3,11 +3,6 @@
 
 Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed to fold the protein.
 
-**NOTE:** This is older code, currently kept for reference. Please see devel branch for most recent working implementation.
-
-Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed
-to fold the protein.
-
 **Pre-install**<br />
 If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python distribution.
 If you are installing on a cluster or HPC, you will likely need to specify a non-standard miniconda
