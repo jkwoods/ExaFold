@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
 from exafold import (
-    OmmSystem, read_restraints, OMM_RESTRAIN_distance
-)
+    OmmSystem, read_restraints, OMM_RESTRAIN_distance)
+
 from test_configuration import (
-    input_prefix, system_file, restraint_prefix
-)
+    input_prefix, system_file, restraint_prefix)
 
 from simtk import unit as u
 
@@ -16,8 +15,7 @@ inpcrd = input_prefix / "rst7"
 ommsystem = OmmSystem(
     ff_type="amber",
     topology=prmtop,
-    coordinates=inpcrd,
-)
+    coordinates=inpcrd,)
 
 ommsystem.save_xml(system_file)
 othsystem = OmmSystem(system_file=system_file)
