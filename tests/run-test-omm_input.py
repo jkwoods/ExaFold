@@ -51,9 +51,10 @@ temperature = 600
 
 integrator_name = "langevin"
 integrator_definition = OMM_INTEGRATOR[integrator_name]
-integrator_definition
+ommsystem.initialize_integrator(integrator_definition)
 
-ommsimulation = ommsystem.setup_simulation(integrator_definition, platform, steps)
-ommsimulation.run(simulation_steps=steps)
+platform = Platform.getPlatformByName("OpenCL")             #Do we want to encapsulate the handling of platform in some way?
+ommsimulation = ommsystem.setup_simulation(platform, steps)
+ommsimulation.run()
 
 print("working")
