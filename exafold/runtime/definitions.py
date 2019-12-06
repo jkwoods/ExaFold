@@ -3,10 +3,14 @@ _default_omm_configuration = dict(
         LangevinIntegrator=dict(
             temperature=300,
             frictionCoeff=1,
-            stepsize=2,
+            stepSize=2,
         )
     ),
     barostat=dict(),
     thermostat=dict(),
-    device="CUDA",
+)
+
+_default_rt_configuration = dict(
+    device="Reference",
+    host="local",
 )
