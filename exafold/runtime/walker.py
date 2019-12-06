@@ -1,5 +1,6 @@
 
-from .definitions import _default_omm_configuration
+from .definitions import _default_omm_configuration, _default_rt_configuration
+from .configuration import Configuration
 from ..mdsystem import OmmSystem
 from . import integrate
 
@@ -20,26 +21,21 @@ class Walker(object):
         super(Walker, self).__init__()
 
         self._simulation    = simulation
-        self._configuration = configuration
         self._integrator    = integrator
         self._platform      = None
+        self._properties    = None
+
+        if configuration is None:
+            self._configuration = Configuration()
+
+
+    def configure_walk(self, cfg):
+        self.configuration.configure(cfg)
 
 
     @property
     def configuration(self):
         return self._configuration
-
-
-    @configuration.setter
-    def configuration(self, configuration):
-
-        if self.configuration is not None:
-            self._configuration = configuration
-
-        else:
-            warning.warn(
-                "Walker.configuration: attribute already set",
-                Warning)
 
 
     @property
@@ -68,20 +64,36 @@ class Walker(object):
 
 
     @property
+    def properties(self):
+        return self._properties
+
+
+    @property
     def platform(self):
         return self._platform
 
 
     @property
+    def integrator_components(self):
+        if len(self._integrator) > 1:
+            return self._integrator[1:]
+        else:
+            return []
+
+
+    @property
     def integrator(self):
-        return self._integrator
+        if self._integrator:
+            return self._integrator[0]
+        else:
+            return []
 
 
     def create_platform(self, device=None):
         if device is None:
             device = _default_omm_configuration["device"]
 
-        platform = openmm.Platform.getPlatformByName(device)
+        self._platform = openmm.Platform.getPlatformByName(device)
 
 
     def create_integrator(self, components):
@@ -105,20 +117,28 @@ class Walker(object):
         self._integrator = integrator
 
 
-    def generate_simulation(self, system, device=None):
+    def generate_simulation(self, system):
 
         assert isinstance(system, OmmSystem)
 
-        if self.platform is None:
-            self._platform = self.create_platform(device)
+        if not self.platform:
+            self._platform = self.create_platform(
+                _default_rt_configuration["device"])
 
-        if self.integrator is None:
-            self.create_integrator(_default_omm_configuration)
+        if not self.integrator:
+            self.create_integrator(
+                _default_omm_configuration)
 
-        simulation = Simulation(
+        self._simulation = Simulation(
             system.topology,
-            system,
+            system.system,
             self.integrator,
-            openmm.Platform("CUDA"),
-            properties)
+            self.platform,)
+            #self.properties)
+
+        self.set_positions(system.system.initial_positions)
+
+
+    def set_positions(self, positions):
+        self._simulation.context.set_positions(positions)
 
