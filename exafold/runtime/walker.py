@@ -6,7 +6,7 @@ from . import integrate
 
 import warnings
 
-from simtk.openmm.app import Simulation
+from simtk.openmm.app import Simulation, StateDataReporter, DCDReporter
 from simtk import openmm
 
 __all__ = ["Walker"]
@@ -29,8 +29,47 @@ class Walker(object):
             self._configuration = Configuration()
 
 
-    def configure_walk(self, cfg):
-        self.configuration.configure(cfg)
+    def add_reporters(self):
+
+        if self.configuration.fn_state:
+            self.simulation.reporters.append(
+                StateDataReporter(
+                    self.configuration.fn_state,
+                    self.configuration.fr_save,
+                    step=True,
+                    potentialEnergy=True,
+                    kineticEnergy=True,
+                    totalEnergy=True,
+                    temperature=True,
+                    separator="  ||  ",
+                    volume=True,
+                    density=True,
+                    speed=True,
+            ))
+
+        if self.configuration.fn_state:
+            self.simulation.reporters.append(
+                DCDReporter(
+                    self.configuration.fn_traj,
+                    self.configuration.fr_save,
+            ))
+
+
+    def configure_walk(self, cfg=None):
+        if cfg:
+            self.configuration.configure(cfg)
+
+        self.add_reporters()
+
+        # Poor-mans version of properties on Walker
+        # instances to corresponding Configuration fields
+        #  - i.e. read-only attributessd;
+        #  - TODO it's still like a method
+        def _property(key):
+            return lambda: getattr(self.configuration, key)
+
+        for field in self.configuration._fields:
+            self.__dict__[field] = _property(field)
 
 
     @property
@@ -130,15 +169,16 @@ class Walker(object):
                 _default_omm_configuration)
 
         self._simulation = Simulation(
-            system.topology,
+            system.topology.to_openmm(),
             system.system,
             self.integrator,
             self.platform,)
             #self.properties)
 
-        self.set_positions(system.system.initial_positions)
+        initial_positions = system.initial_positions
+        self.set_positions(initial_positions)
 
 
     def set_positions(self, positions):
-        self._simulation.context.set_positions(positions)
+        self._simulation.context.setPositions(positions)
 
