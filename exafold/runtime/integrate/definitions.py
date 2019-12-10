@@ -41,4 +41,7 @@ MonteCarloBarostat     = dict(
     frequency          = 1, # this one in MD timesteps
 )
 
+# TODO the interweb is not clear on wether this is
+#      a good practice or not... I like it
 del u
+del TimestepComponent
