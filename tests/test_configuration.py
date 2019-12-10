@@ -20,3 +20,8 @@ restraint_prefix = cwd / "T0968s2_example_input"
 if not output_prefix.is_dir():
     output_prefix.mkdir()
 
+md_instructions = dict(
+    n_steps = 1000,
+    #temps   = [300,400,300],
+    #n_steps = [1000,1000,1000],
+)
