@@ -1,6 +1,14 @@
 
 __all__ = ["read_restraints"]
 
+# TODO update docstrings, we are not returning 2 lists
+#      anymore but rather the native format for using
+#      with restraint definitions in OpenMM
+#      (a heterogeneous list with particles, something
+#      else maybe, and force constants)
+# TODO reconsider the all-caps silly things that now
+#      seem like user-facing objects
+
 
 from pathlib import Path
 import parse
