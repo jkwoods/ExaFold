@@ -1,0 +1,184 @@
+
+from .definitions import _default_omm_configuration, _default_rt_configuration
+from .configuration import Configuration
+from ..mdsystem import OmmSystem
+from . import integrate
+
+import warnings
+
+from simtk.openmm.app import Simulation, StateDataReporter, DCDReporter
+from simtk import openmm
+
+__all__ = ["Walker"]
+
+class Walker(object):
+    '''Used to propagate a simulation instance
+    associated to walker object.
+    '''
+    def __init__(self, simulation=None, configuration=None,
+        integrator=None,):
+
+        super(Walker, self).__init__()
+
+        self._simulation    = simulation
+        self._integrator    = integrator
+        self._platform      = None
+        self._properties    = None
+
+        if configuration is None:
+            self._configuration = Configuration()
+
+
+    def add_reporters(self):
+
+        if self.configuration.fn_state:
+            self.simulation.reporters.append(
+                StateDataReporter(
+                    self.configuration.fn_state,
+                    self.configuration.fr_save,
+                    step=True,
+                    potentialEnergy=True,
+                    kineticEnergy=True,
+                    totalEnergy=True,
+                    temperature=True,
+                    separator="  ||  ",
+                    volume=True,
+                    density=True,
+                    speed=True,
+            ))
+
+        if self.configuration.fn_state:
+            self.simulation.reporters.append(
+                DCDReporter(
+                    self.configuration.fn_traj,
+                    self.configuration.fr_save,
+            ))
+
+
+    def configure_walk(self, cfg=None):
+        if cfg:
+            self.configuration.configure(cfg)
+
+        self.add_reporters()
+
+        # Poor-mans version of properties on Walker
+        # instances to corresponding Configuration fields
+        #  - i.e. read-only attributessd;
+        #  - TODO it's still like a method
+        def _property(key):
+            return lambda: getattr(self.configuration, key)
+
+        for field in self.configuration._fields:
+            self.__dict__[field] = _property(field)
+
+
+    @property
+    def configuration(self):
+        return self._configuration
+
+
+    @property
+    def simulation(self):
+        return self._simulation
+
+
+    @simulation.setter
+    def simulation(self, simulation):
+
+        if self.simulation is not None:
+            assert isinstance(simulation, Simulation)
+
+            self._simulation = simulation
+
+        else:
+            warning.warn(
+                "Walker.simulation: attribute already set",
+                Warning)
+
+
+    def go(self):
+        self._simulation.step(
+            self.configuration.n_steps
+        )
+
+
+    @property
+    def properties(self):
+        return self._properties
+
+
+    @property
+    def platform(self):
+        return self._platform
+
+
+    @property
+    def integrator_components(self):
+        if len(self._integrator) > 1:
+            return self._integrator[1:]
+        else:
+            return []
+
+
+    @property
+    def integrator(self):
+        if self._integrator:
+            return self._integrator[0]
+        else:
+            return []
+
+
+    def create_platform(self, device=None):
+        if device is None:
+            device = _default_omm_configuration["device"]
+
+        self._platform = openmm.Platform.getPlatformByName(device)
+
+
+    def create_integrator(self, components):
+        '''Integrator is created from the given components
+        The actual timestep integrator name first or alone,
+        then accesories such as barostat or thermostat.
+        '''
+        integrator = list()
+
+        # first is the actual integrator
+        # then additional components
+        for _,component in components.items():
+
+            if component:
+                assert len(component) == 1
+
+                nm,args  = list(component.items())[0]
+                xaf_omm  = getattr(integrate, nm)()
+                integrator.append(xaf_omm.create(**args))
+
+        self._integrator = integrator
+
+
+    def generate_simulation(self, system):
+
+        assert isinstance(system, OmmSystem)
+
+        if not self.platform:
+            self._platform = self.create_platform(
+                _default_rt_configuration["device"])
+
+        if not self.integrator:
+            self.create_integrator(
+                _default_omm_configuration)
+
+        self._simulation = Simulation(
+            system.topology.to_openmm(),
+            system.system,
+            self.integrator,
+            self.platform,)
+            #self.properties)
+
+        initial_positions = system.initial_positions
+        self.set_positions(initial_positions)
+
+
+    def set_positions(self, positions):
+        self._simulation.context.setPositions(positions)
+

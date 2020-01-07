@@ -52,19 +52,10 @@ class OmmSystem(object):
         and the restraint parameters to apply to the
         group
 
-    setup_simulation ::
-        create a `simulation` object using the current
-        `system` state. If a restraint force has been
-        configured AND applied, these interactions will
-        be included in the simulation
-
     save_pdb :: probably doesn't work at the moment
     save_xml :: save `system` with `XmlSerializer`
     load_xml :: load `system` with `XmlSerializer`
     """
-
-    def setup_simulation(self, integrator_definition):
-        pass
 
     @property
     def initial_positions(self):

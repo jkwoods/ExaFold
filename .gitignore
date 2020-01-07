@@ -1,6 +1,10 @@
-**/*swp
-**/*swo
+**/*.log
+**/*.dcd
 
+**/*.swp
+**/*.swo
+
+**/*.pyc
 **/*__pycache__
 
 tests/omm_*
