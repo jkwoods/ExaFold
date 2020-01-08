@@ -1,0 +1,3 @@
+name:   1ubq
+fasta:  1ubq_example_input/1ubq.fasta
+forcefield:     ../exafold/mdsystem/ff14SB

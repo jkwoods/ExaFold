@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from exafold import (
-    OmmSystem, read_restraints, OMM_RESTRAIN_distance)
+    OmmSystem, linear_peptide, read_restraints, OMM_RESTRAIN_distance)
 
 from test_configuration import (
     input_prefix, system_file, restraint_prefix)
@@ -9,6 +9,8 @@ from test_configuration import (
 from simtk import unit as u
 
 #---------- READ OpenMM Base System ------------------------#
+linear_peptide()
+
 prmtop = input_prefix / "prmtop"
 inpcrd = input_prefix / "rst7"
 
