@@ -183,9 +183,13 @@ class OmmSystem(object):
         assert self.topology  # if None, can't get atom index from resatom
 
         # MDTraj residues start numbering at 1
-        return int(self.topology.select("residue %d and name %s" % (
+        mdtrajatom = self.topology.select("residue %d and name %s" % (
             resatom[0], resatom[1].upper()
-        )))
+        ))
+        if mdtrajatom:
+            return int(mdtrajatom)
+        else:
+            return -1
 
     def _format_interactions(self, restraint_type, interactions):
 
@@ -199,12 +203,13 @@ class OmmSystem(object):
                 self._aidx_from_resatom(ra)
                 for ra in interaction[:n_atoms]
             ]
-            parameters   = [
-                par*par_units[i]
-                for i,par in enumerate(interaction[n_atoms:])
-            ]
+            if all([ai > 0 for ai in atom_indices]):
+                parameters   = [
+                    par*par_units[i]
+                    for i,par in enumerate(interaction[n_atoms:])
+                ]
 
-            yield atom_indices, parameters
+                yield atom_indices, parameters
 
 
     # Consider taking atom_group+parameters separately?
