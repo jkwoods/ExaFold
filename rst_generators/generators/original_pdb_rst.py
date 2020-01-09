@@ -27,7 +27,7 @@ def make_pdb_rst(orig_pdbfile, linear_pdbfile, dist_range=1.0, dist_force=70.0, 
 
 	# Because in case there are waters first, etc.
 	#  - we are assuming the linear_pdb is ONLY protein
-	#    AND every residue is present in the RCSB file
+	#   AND every residue is present in the RCSB file
 	custom_residue_index = 0
 	for residue in linear_pdb.topology.residues():
 		custom_residue_index += 1
