@@ -8,6 +8,7 @@ import sys
 from itertools import combinations
 import numpy as np
 from simtk.openmm import app
+import collections
 
 __all__ = ["make_pdb_rst"]
 
@@ -20,7 +21,7 @@ def make_pdb_rst(orig_pdbfile, linear_pdbfile, dist_range=1.0, dist_force=70.0, 
 	is_protein = lambda res: res.name.lower() not in {"hoh","h2o","tip3"}
 
 	# dict of {res #: (linear serial #, RCSB serial #)}
-	serials_map = dict()
+	serials_map = collections.OrderedDict()
 	rcsb_pdb = app.PDBFile(orig_pdbfile)
 	linear_pdb = app.PDBFile(linear_pdbfile)
 
@@ -48,6 +49,7 @@ def make_pdb_rst(orig_pdbfile, linear_pdbfile, dist_range=1.0, dist_force=70.0, 
 	rcsb_positions = rcsb_pdb.positions
 	linear_positions = linear_pdb.positions
 
+	#distances
    	dist_rst = dict()
 	for (a1,i1), (a2,i2) in combinations(serials_map.items(), 2):
 
@@ -74,6 +76,13 @@ def make_pdb_rst(orig_pdbfile, linear_pdbfile, dist_range=1.0, dist_force=70.0, 
 		if (dist_rst[key] == None): dist_rst[key] = {'lower': (d._value - dist_range), 'upper': (d._value + dist_range), 'force': dist_force}        
 
 
-
+	#torsions
+	tor_rst = dict() #TODO
+"""	for k, v in serials_map.items():
+		a	# this way is ok, bc serials_map dict is ordered (see above)
+		b
+		c
+		d
+"""	
 
 	return (dist_rst, tor_rst)
