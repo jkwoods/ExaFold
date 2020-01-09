@@ -5,6 +5,7 @@ Small script to handle RMSD and TMscores and easily asses accuracy of folded pro
 
 TO RUN: python scores.py <original pdb file> <generated pdb file>
 
+Uses TMScore, courtesy of <https://zhanglab.ccmb.med.umich.edu/TM-score/>
 """
 
 import sys
