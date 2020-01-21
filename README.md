@@ -1,6 +1,5 @@
 
 # ExaFold
-
 Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed to fold the protein.
 
 **Pre-install**<br />
@@ -41,6 +40,12 @@ git checkout devel
 # choose develop option if you want to
 # make and test source changes
 python setup.py [ install || develop ]
+```
+**Useful for OpenMM on GPU**
+These need to go into you job script to make GPUs accessible for OpenMM
+```bash
+module load <your cuda module name>
+export OPENMM_CUDA_COMPILER=`which nvcc`
 ```
 
 **Requirements:**<br />
