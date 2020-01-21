@@ -10,6 +10,11 @@ directory to use the software to avoid permissions issues. For example on OLCF r
 a good place to install software is `/ccs/proj/<projID>/miniconda3`.
 Here is a lightweight version that will get you started:
 ```bash
+# Use this if you are on PPC64LE
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-ppc64le.sh
+```
+
+```bash
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 rm Miniconda3-latest-Linux-x86_64.sh
