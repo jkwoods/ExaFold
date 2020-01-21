@@ -45,6 +45,7 @@ python setup.py [ install || develop ]
 These need to go into you job script to make GPUs accessible for OpenMM
 ```bash
 module load <your cuda module name>
+# On summit `module load cuda/10.1.168`
 export OPENMM_CUDA_COMPILER=`which nvcc`
 ```
 
