@@ -1,4 +1,4 @@
-DER	CHROMOSOMAL PROTEIN                     02-JAN-87   1UBQ              
+DER    CHROMOSOMAL PROTEIN                     02-JAN-87   1UBQ              
 TITLE     STRUCTURE OF UBIQUITIN REFINED AT 1.8 ANGSTROMS RESOLUTION            
 COMPND    MOL_ID: 1;                                                            
 COMPND   2 MOLECULE: UBIQUITIN;                                                 
@@ -981,4 +981,3 @@ HETATM  660  O   HOH A 133      27.841  46.062  17.589  0.81 32.15           O
 HETATM  661  O   HOH A 134      37.667  43.421  17.000  0.50 33.32           O  
 MASTER      274    0    0    2    5    0    0    6  660    1    0    6          
 END                                                                             
-

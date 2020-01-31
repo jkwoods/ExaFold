@@ -21,6 +21,7 @@ make_restraints ::
 """
 
 from generators import *
+import yaml
 
 __all__ = ["incorporate", "make_restraints"]
 
@@ -37,7 +38,24 @@ def make_restraints(secondary_structure=False, contact_map=False, original_pdb=F
 	dist_rst = dict();
 	tor_rst = dict();
 
-	#TODO - get Fasta
+	with open("my_parameters.yaml", 'r') as stream:
+		try:
+			parameters = yaml.safe_load(stream)
+		except yaml.YAMLError as exc:
+			print(exc)
+
+	fasta = parameters['fasta']
+	name = parameters['name']
+
+	f = open(fasta, "r")
+	lines = f.readlines()
+	seq = ""
+	for l in lines:
+	        if (not (l.startswith(">") or l.startswith(";"))):
+        	        seq = seq + l
+
+	f.close()
+	seq = seq.replace("\n", "") #clean
 
 	if (original_pdb):
 		if (orig_pdbfile == "") or (linear_pdbfile == ""):
@@ -52,9 +70,11 @@ def make_restraints(secondary_structure=False, contact_map=False, original_pdb=F
 		tor_rst = incorporate(s_tor, tor_rst)
 
 	if (contact_map):
-                c_dist, c_tor = make_contact_rst()
+                print("Be sure you're only generating contact map restraints for proteins with useful relatives in the database.\nAlso note that this only applies to residues that are far apart, so it is helpful to generate secondary_structure restraints as well.")
+		if (len(seq) < 24):
+			exit("Error: Protein is too small for meaningful contact map restraints!")
+		c_dist = make_contact_rst(seq)
                 dist_rst = incorporate(c_dist, dist_rst)
-                tor_rst = incorporate(c_tor, tor_rst)
 
 	if (hydrogen_bond_distances or xu_ml):
 		print("Not yet available. The main ExaFold program does take these restraints if you have them, but we cannot currently generate them on our own.")

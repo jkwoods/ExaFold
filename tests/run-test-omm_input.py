@@ -23,8 +23,8 @@ ommsystem.save_xml(system_file)
 othsystem = OmmSystem(system_file=system_file)
 
 #---------- READ Restraints --------------------------------#
-file_torsion_restraints  = restraint_prefix / "dihedral.tbl"
-file_distance_restraints = restraint_prefix / "contact.tbl"
+#file_torsion_restraints  = restraint_prefix / "dihedral.tbl"
+file_distance_restraints = restraint_prefix / "8col.dist"
 #torsion_restraints = read_restraints(file_torsion_restraints, "torsion")
 distance_restraints = read_restraints(file_distance_restraints, "distance")
 

@@ -1,4 +1,4 @@
 
 from .secondary_structure import *
-from .distance_table import *
+from .contact_map import *
 from .original_pdb_rst import *
