@@ -1,6 +1,6 @@
-name:   1ubq
-fasta:  1ubq_example_input/1ubq.fasta
+name:   1aki
+fasta:  1aki_example_input/1aki.fasta
 contact_map:
 secondary_structure:
-pdb:    1ubq_example_input/1ubq.pdb
+pdb:    1aki_example_input/1aki.pdb
 forcefield:     ../exafold/mdsystem/ff14SB
