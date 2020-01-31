@@ -53,8 +53,10 @@ integrator_name = "langevin"
 integrator_definition = OMM_INTEGRATOR[integrator_name]
 ommsystem.initialize_integrator(integrator_definition)
 
+print("integrator added")
+
 platform = Platform.getPlatformByName("OpenCL")             #Do we want to encapsulate the handling of platform in some way?
 ommsimulation = ommsystem.setup_simulation(platform, steps)
 ommsimulation.run()
 
-print("working")
+print("simulation ran")
