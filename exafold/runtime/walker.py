@@ -6,7 +6,7 @@ from . import integrate
 
 import warnings
 
-from simtk.openmm.app import Simulation, StateDataReporter, DCDReporter
+from simtk.openmm.app import Simulation, StateDataReporter, DCDReporter, PDBReporter
 from simtk import openmm
 
 __all__ = ["Walker"]
@@ -30,6 +30,8 @@ class Walker(object):
 
 
     def add_reporters(self):
+
+        self.simulation.reporters.append(PDBReporter("output.pdb", 1000))
 
         if self.configuration.fn_state:
             self.simulation.reporters.append(
