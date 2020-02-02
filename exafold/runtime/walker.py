@@ -97,9 +97,22 @@ class Walker(object):
 
 
     def go(self):
-        self._simulation.step(
-            self.configuration.n_steps
-        )
+        """Fire off the walker
+        """
+        temp_series = iter(self.configuration.temperature if isinstance(
+            self.configuration.temperature, list) else [
+            self.configuration.temperaure])
+
+        done = False
+        while not done:
+            try:
+                self._simulation.integrator.setTemperature(
+                    next(temp_series))
+                self._simulation.step(
+                    self.configuration.n_steps)
+
+            except StopIteration:
+                done = True
 
 
     @property
