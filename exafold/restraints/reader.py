@@ -72,6 +72,7 @@ def parse_distance_restraints(fileobj):
     """
     interactions = list()
     TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
+
     _parse_fields_ = ["R1", "A1", "R2", "A2", "MIN", "L", "U"]
 
     for line in fileobj:

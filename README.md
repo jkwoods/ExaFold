@@ -1,12 +1,6 @@
 
 # ExaFold
-
 Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed to fold the protein.
-
-**NOTE:** This is older code, currently kept for reference. Please see devel branch for most recent working implementation.
-
-Fast GPU-based protein folding simulations that run from only a protein sequence and set of restraints designed
-to fold the protein.
 
 **Pre-install**<br />
 If you do not have a suitable Python 3 installation, we recommend you use an Anaconda Python distribution.
@@ -14,6 +8,11 @@ If you are installing on a cluster or HPC, you will likely need to specify a non
 directory to use the software to avoid permissions issues. For example on OLCF resources such as Summit,
 a good place to install software is `/ccs/proj/<projID>/miniconda3`.
 Here is a lightweight version that will get you started:
+```bash
+# Use this if you are on PPC64LE
+wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-ppc64le.sh
+```
+
 ```bash
 wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
@@ -41,6 +40,13 @@ git checkout devel
 # choose develop option if you want to
 # make and test source changes
 python setup.py [ install || develop ]
+```
+**Useful for OpenMM on GPU**
+These need to go into you job script to make GPUs accessible for OpenMM
+```bash
+module load <your cuda module name>
+# On summit `module load cuda/10.1.168`
+export OPENMM_CUDA_COMPILER=`which nvcc`
 ```
 
 **Requirements:**<br />
