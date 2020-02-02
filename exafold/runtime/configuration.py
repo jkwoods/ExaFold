@@ -3,7 +3,9 @@ class Configuration(object):
     """Save important details for the MD runtime
     """
 
-    _fields = ["n_steps", "temps", "fn_traj", "fn_state", "fr_save"]
+    _fields = [
+        "n_steps", "temperature", "fn_traj",
+        "fn_state", "fr_save"]
 
     def __init__(self, **kwargs):
         super(Configuration, self).__init__()

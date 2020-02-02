@@ -21,7 +21,10 @@ if not output_prefix.is_dir():
     output_prefix.mkdir()
 
 md_instructions = dict(
-    n_steps = 1000,
-    #temps   = [300,400,300],
-    #n_steps = [1000,1000,1000],
+    n_steps = 100000,
+    temperature = [300,600,300,600,300],
+    fr_save = 5000,
+    fn_traj = "trajectory.dcd",
+    fn_state= "state.log",
 )
+
