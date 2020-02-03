@@ -45,8 +45,8 @@ OMM_RESTRAIN_distance = dict(
             # One for each parameter
             # in order of parameters list
             units=[
-                u.kilocalories_per_mole/u.angstrom**2,
-                u.angstrom
+                u.kilojoule_per_mole/u.angstrom**2,
+                u.nanometer,
             ],
         ),
     ),
