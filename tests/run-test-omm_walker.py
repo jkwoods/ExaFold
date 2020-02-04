@@ -16,6 +16,7 @@ ommsystem = OmmSystem(ff_type="amber", topology=prmtop, coordinates=inpcrd,)
 
 #---------- READ Restraints --------------------------------#
 restraints = read_restraints(restraint_prefix / "contact.tbl", "distance")
+for ri in restraints: ri[-1] /= 10
 [ri.append(1000) for ri in restraints]
 
 #---------- APPLY Restraints -------------------------------#
