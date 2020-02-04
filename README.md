@@ -61,7 +61,7 @@ Packages:
 ```bash
 # from ExaFold top directory
 cd tests
-python run-test-omm_input.py
+python run-test-omm_walker.py
 ```
 2. (incomplete) Edit `my_parameters.yaml` with your parameters in a working directory you set up (explaination below)
 2.1. Run from structure + restraintlist
