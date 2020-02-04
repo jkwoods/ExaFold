@@ -22,7 +22,7 @@ if not output_prefix.is_dir():
 
 md_instructions = dict(
     n_steps = 50000,
-    temperature = 5*[0,100,200,300,400,500,600,500,400,300,200,100,0],
+    temperature = [0,100,200,300,400,500,600,500,400,300,200,100,0],
     fr_save = 1000,
     fn_traj = "trajectory.dcd",
     fn_state= "state.log",
