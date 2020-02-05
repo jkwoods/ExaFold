@@ -30,23 +30,22 @@ OMM_RESTRAIN_distance = dict(
         CustomBondForce=dict(
             # given on outer App call
             #  - can be empty
-            formula=["-k*(r-r0)^2"],
+            formula=["k*(r-r0)^2"],
             # one-time calls to Restraint
             # type object
             parameters=[
-                dict(addPerBondParameter=["k"]),
+                dict(addGlobalParameter=["k", 0.0]),
                 dict(addPerBondParameter=["r0"]),
             ],
             # Name and call signature for method
             # to add each restraint instance..
             # This case has:
             # 1 restraint ~ [2 atoms, 2 parameters]
-            restraint=dict(addBond=[2,2]),
+            restraint=dict(addBond=[2,1]),
             # One for each parameter
             # in order of parameters list
             units=[
-                u.kilojoule_per_mole/u.angstrom**2,
-                u.nanometer,
+                1,
             ],
         ),
     ),
@@ -54,6 +53,32 @@ OMM_RESTRAIN_distance = dict(
     # TODO probably wrap the default implementations
     #      and test if they run faster or not
     harmonic_force=dict(),
+    flatbottom_customforce=dict(
+        # Name of OpenMM App Restraint Type
+        #  --> must be length 1 dict with
+        #      name of OpenMM force class
+        CustomBondForce=dict(
+            # given on outer App call
+            #  - can be empty
+            formula=["step(r-r0)*(k/2)*(r-r0)^2"],
+            # one-time calls to Restraint
+            # type object
+            parameters=[
+                dict(addGlobalParameter=["k", 0.0]),
+                dict(addPerBondParameter=["r0"]),
+            ],
+            # Name and call signature for method
+            # to add each restraint instance..
+            # This case has:
+            # 1 restraint ~ [2 atoms, 2 parameters]
+            restraint=dict(addBond=[2,1]),
+            # One for each parameter
+            # in order of parameters list
+            units=[
+                1,
+            ],
+        ),
+    ),
 )
 
 OMM_RESTRAIN_torsion  = "CustomTorsionForce"

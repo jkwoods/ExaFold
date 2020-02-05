@@ -105,14 +105,26 @@ class Walker(object):
             self.configuration.temperature, list) else [
             self.configuration.temperaure])
 
+        self._simulation.context.setParameter("k", 0.0)
+
         done = False
+        force = 5.0
+        increment = 0.0
+        heatup = 0
         while not done:
             try:
                 self._simulation.integrator.setTemperature(
                     next(temp_series))
+
+                self._simulation.context.setParameter("k", force*increment)  
+
                 self._simulation.step(
                     self.configuration.n_steps)
 
+                heatup += 1
+                if (increment < 1) and (heatup >= 6):
+                    increment += 0.1
+                print(str(force*increment))
             except StopIteration:
                 done = True
 
