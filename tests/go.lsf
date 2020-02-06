@@ -4,8 +4,8 @@
 #BSUB -W 00:20
 #BSUB -nnodes 1
 #BSUB -J exafoldtest
-#BSUB -o efcpu_out.%J
-#BSUB -e efcpu_err.%J
+#BSUB -o ef_out.%J
+#BSUB -e ef_err.%J
 
 module load gcc
 module load cuda/10.1.168
@@ -15,7 +15,7 @@ cd $MEMBERWORK/gen119/EF
 
 date
 
-jsrun --smpiargs="off" -n 1 -a 1 -c 1 -r 1 python run-test-omm_walker.py
+jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 3 -r 1 python run-test-omm_walker.py
 
 date
 

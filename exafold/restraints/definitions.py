@@ -45,7 +45,7 @@ OMM_RESTRAIN_distance = dict(
             # One for each parameter
             # in order of parameters list
             units=[
-                1,
+                u.angstrom,
             ],
         ),
     ),
@@ -75,7 +75,7 @@ OMM_RESTRAIN_distance = dict(
             # One for each parameter
             # in order of parameters list
             units=[
-                1,
+                u.angstrom,
             ],
         ),
     ),

@@ -3,7 +3,7 @@ _default_omm_configuration = dict(
         LangevinIntegrator=dict(
             temperature=300,
             frictionCoeff=1,
-            stepSize=2,
+            stepSize=0.5,
         )
     ),
     barostat=dict(),
