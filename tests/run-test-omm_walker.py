@@ -15,15 +15,15 @@ inpcrd = input_prefix / "rst7"
 ommsystem = OmmSystem(ff_type="amber", topology=prmtop, coordinates=inpcrd,)
 
 #---------- READ Restraints --------------------------------#
-restraints = read_restraints(restraint_prefix / "contact.tbl", "distance")
-for ri in restraints: ri[-1] /= 10
-[ri.append(1000) for ri in restraints]
+restraints = read_restraints(restraint_prefix / "dist_made", "distance")
+#for ri in restraints: ri[-1] /= 10
+#[ri.append(70) for ri in restraints]
 
 #---------- APPLY Restraints -------------------------------#
 this_restraint = OMM_RESTRAIN_distance["simpleharmonic_customforce"]
 restraint_type = list(this_restraint)[0]
 ommsystem.initialize_restraint_force(this_restraint)
-ommsystem.add_restraint_interactions(restraint_type, restraints[::10])
+ommsystem.add_restraint_interactions(restraint_type, restraints) #[::10]
 ommsystem.apply_restraint_force(restraint_type)
 
 #---------- BIND MD System to Walker -----------------------#
