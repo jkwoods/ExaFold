@@ -15,7 +15,7 @@ inpcrd = input_prefix / "rst7"
 ommsystem = OmmSystem(ff_type="amber", topology=prmtop, coordinates=inpcrd,)
 
 #---------- READ Restraints --------------------------------#
-restraints = read_restraints(restraint_prefix / "dist_made", "distance")
+restraints = read_restraints(restraint_prefix / "little", "distance")
 force_constant = 5.0 #this is actually a good range for whatever reason
 
 #---------- APPLY Restraints -------------------------------#
