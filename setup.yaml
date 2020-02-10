@@ -39,6 +39,7 @@ packages:
   - exafold.mdsystem
   - exafold.restraints
   - exafold.runtime
+  - exafold.runtime.integrate
 
 platforms:
   - Linux
