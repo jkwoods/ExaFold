@@ -22,8 +22,9 @@ rm Miniconda3-latest-Linux-x86_64.sh
 #  - change the "pwd" here according to your miniconda install path
 export PATH="$(pwd)/miniconda3/bin:$PATH"
 
-# One dependency for the installation itself
+# Two dependencies for the installation itself
 conda install pyyaml
+conda install openmm
 ```
 
 **Install:**<br />
