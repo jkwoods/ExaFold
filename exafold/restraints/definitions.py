@@ -60,7 +60,7 @@ OMM_RESTRAIN_distance = dict(
         CustomBondForce=dict(
             # given on outer App call
             #  - can be empty
-            formula=["step(r-r0)*(k/2)*(r-r0)^2"],
+            formula=["step((r-r0)-1)*(k/2)*((r-r0)-1)^2"],
             # one-time calls to Restraint
             # type object
             parameters=[

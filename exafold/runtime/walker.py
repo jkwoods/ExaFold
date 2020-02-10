@@ -98,7 +98,7 @@ class Walker(object):
                 Warning)
 
 
-    def go(self):
+    def go(self, force_constant):
         """Fire off the walker
         """
         temp_series = iter(self.configuration.temperature if isinstance(
@@ -108,7 +108,6 @@ class Walker(object):
         self._simulation.context.setParameter("k", 0.0)
 
         done = False
-        force = 5.0
         increment = 0.0
         heatup = 0
         while not done:
@@ -116,7 +115,7 @@ class Walker(object):
                 self._simulation.integrator.setTemperature(
                     next(temp_series))
 
-                self._simulation.context.setParameter("k", force*increment)  
+                self._simulation.context.setParameter("k", force_constant*increment)  
 
                 self._simulation.step(
                     self.configuration.n_steps)
@@ -124,7 +123,6 @@ class Walker(object):
                 heatup += 1
                 if (increment < 1) and (heatup >= 6):
                     increment += 0.1
-                print(str(force*increment))
             except StopIteration:
                 done = True
 

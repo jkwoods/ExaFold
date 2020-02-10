@@ -71,16 +71,17 @@ def parse_distance_restraints(fileobj):
       > list2: minimum position
     """
     interactions = list()
-    TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
+    #TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
+    TEMPLATE_distance = "{R1}    {R1N}    {A1}    {R2}    {R2N}    {A2}    {DIST}"
 
-    _parse_fields_ = ["R1", "A1", "R2", "A2", "MIN", "L", "U"]
+    _parse_fields_ = ["R1", "R1N", "A1", "R2", "R2N", "A2", "DIST"]
 
     for line in fileobj:
         parsed = parse.parse(TEMPLATE_distance, line)
         if all([pf in parsed for pf in _parse_fields_]):
-            R1, A1, R2, A2, MIN, L, U = [parsed[pf] for pf in _parse_fields_]
+            R1, R1N, A1, R2, R2N, A2, DIST = [parsed[pf] for pf in _parse_fields_]
 
-            interactions.append([(int(R1),A1),(int(R2),A2), float(MIN)])
+            interactions.append([(int(R1),A1),(int(R2),A2), float(DIST)])
 
     return interactions
 
