@@ -60,21 +60,23 @@ OMM_RESTRAIN_distance = dict(
         CustomBondForce=dict(
             # given on outer App call
             #  - can be empty
-            formula=["step((r-r0)-1)*(k/2)*((r-r0)-1)^2"],
+            formula=["step((r-r0)-f)*(k/2)*((r-r0)-f)^2"],
             # one-time calls to Restraint
             # type object
             parameters=[
                 dict(addGlobalParameter=["k", 0.0]),
                 dict(addPerBondParameter=["r0"]),
+                dict(addPerBondParameter=["f"])
             ],
             # Name and call signature for method
             # to add each restraint instance..
             # This case has:
             # 1 restraint ~ [2 atoms, 2 parameters]
-            restraint=dict(addBond=[2,1]),
+            restraint=dict(addBond=[2,2]),
             # One for each parameter
             # in order of parameters list
             units=[
+                u.angstrom,
                 u.angstrom,
             ],
         ),

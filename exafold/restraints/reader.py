@@ -70,18 +70,34 @@ def parse_distance_restraints(fileobj):
       > list1: pairs of particles
       > list2: minimum position
     """
+    #old jinbo stuff
+    """
     interactions = list()
-    #TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
-    TEMPLATE_distance = "{R1}    {R1N}    {A1}    {R2}    {R2N}    {A2}    {DIST}"
+    TEMPLATE_distance = "assign (resid {R1} and name {A1}) (resid {R2} and name {A2}) {MIN} {L} {U}"
+    #TEMPLATE_distance = "{R1}    {R1N}    {A1}    {R2}    {R2N}    {A2}    {DIST}"
 
-    _parse_fields_ = ["R1", "R1N", "A1", "R2", "R2N", "A2", "DIST"]
+    #_parse_fields_ = ["R1", "R1N", "A1", "R2", "R2N", "A2", "DIST"]
+    _parse_fields_ = ["R1", "A1", "R2", "A2", "MIN", "L", "U"]
 
     for line in fileobj:
         parsed = parse.parse(TEMPLATE_distance, line)
         if all([pf in parsed for pf in _parse_fields_]):
-            R1, R1N, A1, R2, R2N, A2, DIST = [parsed[pf] for pf in _parse_fields_]
+            R1, A1, R2, A2, MIN, L, U = [parsed[pf] for pf in _parse_fields_]
 
-            interactions.append([(int(R1),A1),(int(R2),A2), float(DIST)])
+            interactions.append([(int(R1),A1),(int(R2),A2), float(MIN)])
+    """
+    interactions = list()
+    for line in fileobj:
+        cols = line.split()
+        R1 = int(cols[0])
+        R1N = cols[1]
+        A1 = cols[2]
+        R2 = int(cols[3])
+        R2N = cols[4]
+        A2 = cols[5]
+        DIST = float(cols[6])
+        FLAT = float(cols[7])
+        interactions.append([(R1,A1),(R2,A2),DIST,FLAT])
 
     return interactions
 
