@@ -83,5 +83,21 @@ OMM_RESTRAIN_distance = dict(
     ),
 )
 
-OMM_RESTRAIN_torsion  = "CustomTorsionForce"
+OMM_RESTRAIN_torsion = dict(
+    simpleharmonic_customforce=dict(
+        CustomTorsionForce=dict(
+            formula=["0.5*a*(theta-theta0)^2"],
+            parameters=[
+                dict(addGlobalParameter=["a", 0.0]), #must be called something different
+                dict(addPerTorsionParameter=["theta0"]),
+            ],
+            restraint=dict(addTorsion=[4,1]), #4 atoms, 1 parameter
+            units=[
+                u.radians,
+            ],
+        ),
+    ),
+)
+
+
 
