@@ -44,7 +44,7 @@ CUDA 10.1, if you need a different PPC64LE build of OpenMM, you will have to mod
 ```bash
 git clone https://github.com/jkwoods/exafold
 cd exafold
-git checkout devel
+git checkout master
 
 # choose develop option if you want to
 # make and test source changes
