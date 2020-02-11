@@ -1,6 +1,6 @@
-
 import sys
 import versioneer
+from pathlib import Path
 
 from platform import processor
 
@@ -86,12 +86,13 @@ myarch = processor()
 if "ppc64" in myarch:
     # Dirty solution here...
     import subprocess, shlex, os
+    olddir = Path(".").resolve()
     os.chdir("..")
     subprocess.call(shlex.split("conda install cython scipy"))
     subprocess.call(shlex.split("git clone https://github.com/jrossyra/mdtraj-nogeo"))
     os.chdir("mdtraj-nogeo")
     subprocess.call(shlex.split("pip install -e ."))
-    os.chdir("../exafold")
+    os.chdir(str(olddir))
 
 setup(**setup_args)
 
