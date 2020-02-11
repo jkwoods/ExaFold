@@ -24,7 +24,7 @@ export PATH="$(pwd)/miniconda3/bin:$PATH"
 
 # Two dependencies for the installation itself
 conda install pyyaml
-conda install openmm
+conda install -c omnia openmm
 ```
 
 **Install:**<br />
