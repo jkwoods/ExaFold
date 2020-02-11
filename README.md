@@ -24,7 +24,15 @@ export PATH="$(pwd)/miniconda3/bin:$PATH"
 
 # Two dependencies for the installation itself
 conda install pyyaml
+
+# OpenMM Install Before Exafold
+# If you are on plain-vanilla x86 machines
 conda install -c omnia openmm
+# If you have a different hardware, you will need to match
+# your CUDA version and hardware to a build of openmm
+# or build it yourself in the worst case.
+#  -> this one is for OLCF Summit w/ default cuda module
+conda install openmm -c omnia-dev/label/cuda101
 ```
 
 **Install:**<br />
