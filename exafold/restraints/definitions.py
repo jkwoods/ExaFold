@@ -97,6 +97,19 @@ OMM_RESTRAIN_torsion = dict(
             ],
         ),
     ),
+    flatbottom_customforce=dict(
+        CustomTorsionForce=dict(
+            formula=["step((theta-theta0)-f)*(a/2)*((theta-theta0)-f)^2"],
+            parameters=[
+                dict(addGlobalParameter=["a", 0.0]), #must be called something different
+                dict(addPerTorsionParameter=["theta0"]),
+            ],
+            restraint=dict(addTorsion=[4,1]), #4 atoms, 1 parameter
+            units=[
+                u.radians,
+            ],
+        ),
+    ),
 )
 
 

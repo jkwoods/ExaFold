@@ -123,8 +123,9 @@ class Walker(object):
                     self.configuration.n_steps)
 
                 heatup += 1
-                if (increment < 1) and (heatup >= 6):
+                if (t_increment < 1) and (heatup >= 6):
                     increment += 0.1
+
             except StopIteration:
                 done = True
 
