@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "run-test-omm_walker.py", line 48, in <module>
+    walker.go(distance_force, torsion_force)
+  File "/autofs/nccs-svm1_proj/gen119/woods/exa/exafold/exafold/runtime/walker.py", line 126, in go
+    if (t_increment < 1) and (heatup >= 6):
+NameError: name 't_increment' is not defined
