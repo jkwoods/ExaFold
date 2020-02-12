@@ -16,17 +16,19 @@ ommsystem = OmmSystem(ff_type="amber", topology=prmtop, coordinates=inpcrd,)
 
 #---------- READ Restraints --------------------------------#
 #distances
-distance_restraints = read_restraints(restraint_prefix / "8col.dist", "distance")
+#distance_restraints = read_restraints(restraint_prefix / "8col.dist", "distance")
 distance_force = 15.0
 
 #torsions
-torsion_restraints = read_restraints(restraint_prefix / "5col.angles", "torsion")
-torsion_force = 30.0
-print(torsion_restraints)
+#torsion_restraints = read_restraints(restraint_prefix / "5col.angles", "torsion")
+torsion_force = 10.0
+#print(torsion_restraints)
 
 #---------- APPLY Restraints -------------------------------#
+
+"""
 #distances
-this_restraint = OMM_RESTRAIN_distance["flatbottom_customforce"]
+this_restraint = OMM_RESTRAIN_distance["simpleharmonic_customforce"]
 restraint_type = list(this_restraint)[0]
 ommsystem.initialize_restraint_force(this_restraint)
 ommsystem.add_restraint_interactions(restraint_type, distance_restraints) #[::10]
@@ -38,6 +40,7 @@ t_restraint_type = list(tor_restraint)[0]
 ommsystem.initialize_restraint_force(tor_restraint)
 ommsystem.add_restraint_interactions(t_restraint_type, torsion_restraints)
 ommsystem.apply_restraint_force(t_restraint_type)
+"""
 
 #---------- BIND MD System to Walker -----------------------#
 walker = Walker()

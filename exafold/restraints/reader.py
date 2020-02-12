@@ -96,8 +96,8 @@ def parse_distance_restraints(fileobj):
         R2N = cols[4]
         A2 = cols[5]
         DIST = float(cols[6])
-        FLAT = float(cols[7])
-        interactions.append([(R1,A1),(R2,A2),DIST,FLAT])
+        #FLAT = float(cols[7])
+        interactions.append([(R1,A1),(R2,A2),DIST])
 
     return interactions
 
@@ -118,6 +118,7 @@ def parse_torsion_restraints(fileobj):
         R4 = int(cols[6])
         A4 = cols[7]
         ANG = float(cols[8])
+        #FLAT = float(cols[9])
         interactions.append([(R1,A1),(R2,A2),(R3,A3),(R4,A4),ANG])
 
     return interactions

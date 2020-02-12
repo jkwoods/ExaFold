@@ -103,9 +103,11 @@ OMM_RESTRAIN_torsion = dict(
             parameters=[
                 dict(addGlobalParameter=["a", 0.0]), #must be called something different
                 dict(addPerTorsionParameter=["theta0"]),
+                dict(addPerTorsionParameter=["f"]),
             ],
-            restraint=dict(addTorsion=[4,1]), #4 atoms, 1 parameter
+            restraint=dict(addTorsion=[4,2]), #4 atoms, 1 parameter
             units=[
+                u.radians,
                 u.radians,
             ],
         ),

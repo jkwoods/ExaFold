@@ -10,6 +10,21 @@ _default_omm_configuration = dict(
     thermostat=dict(),
 )
 
+_amber_test_configuration = dict(
+    integrator=dict(
+        VerletIntegrator=dict(
+            stepSize=1, #same as amber default
+        )
+    ),
+    barostat=dict(),
+    thermostat=dict(
+        AndersenThermostat=dict(
+            defaultTemperature=0,
+            defaultCollisionFrequency=.1,
+        )
+    ),
+)
+
 _default_rt_configuration = dict(
     device="Reference",
     host="local",
