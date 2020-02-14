@@ -31,7 +31,7 @@ class Walker(object):
 
     def add_reporters(self):
 
-        self.simulation.reporters.append(PDBReporter("output.pdb", 1000))
+        self.simulation.reporters.append(PDBReporter("output.pdb", 5000))
 
         if self.configuration.fn_state:
             self.simulation.reporters.append(
@@ -101,24 +101,20 @@ class Walker(object):
     def go(self, distance_force, torsion_force):
         """Fire off the walker
         """        
-        #temp_series = iter(self.configuration.temperature if isinstance(
-        #    self.configuration.temperature, list) else [
-        #    self.configuration.temperaure])
-
-        temp_series = iter(5*[36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0])
-        coll_series = iter(5*[200,200,200,200,200,200,200,200,200,200,200,200,500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,200,100,50])
+        temp_series = iter(20*[36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0])
+        coll_series = iter(20*[400,400,400,400,400,400,400,400,400,400,400,400,2000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,400,100,50])
 
 	#TODO enable the turning off of rst
         self._simulation.context.setParameter("k", 0.0)
         self._simulation.context.setParameter("a", 0.0)
+        #for force in self._simulation.system.getForces():
+        #    if isinstance(force, openmm.NonbondedForce):        
+        #        force.setCutoffDistance(1.5)  #15 angstroms = 1.5 nm; amber does this
 
         done = False
         increment = 0.0
         while not done:
             try:
-
-#                self._simulation.integrator.setTemperature(
-#                    next(temp_series))
 
                 self._simulation.context.setParameter('AndersenTemperature', next(temp_series)) #TEMP FIX - TODO change
                 self._simulation.context.setParameter('AndersenCollisionFrequency', next(coll_series)) #TEMP FIX
@@ -131,7 +127,10 @@ class Walker(object):
                     self._simulation.step(1000)
 
                 else:
-                    self._simulation.step(2000) #self.configuration.n_steps)
+                    self._simulation.step(2000)
+
+                #print(self._simulation.context.getState(False,True,False,False,False,False).getVelocities())
+
 
             except StopIteration:
                 done = True
