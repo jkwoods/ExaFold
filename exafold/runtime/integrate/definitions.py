@@ -55,7 +55,7 @@ class AndersenThermostat(TimestepComponent):
 
     kwargs = [
         ("defaultTemperature"     	, u.kelvin),
-        ("defaultCollisionFrequency"	, 1/u.picosecond),
+        ("defaultCollisionFrequency"	, 1/u.femtosecond),
     ]
 
     def __init__(self):

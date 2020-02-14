@@ -20,7 +20,7 @@ _amber_test_configuration = dict(
     thermostat=dict(
         AndersenThermostat=dict(
             defaultTemperature=0,
-            defaultCollisionFrequency=.1,
+            defaultCollisionFrequency=100,
         )
     ),
 )

@@ -106,6 +106,7 @@ class Walker(object):
         #    self.configuration.temperaure])
 
         temp_series = iter(5*[36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0])
+        coll_series = iter(5*[200,200,200,200,200,200,200,200,200,200,200,200,500,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,200,100,50])
 
 	#TODO enable the turning off of rst
         self._simulation.context.setParameter("k", 0.0)
@@ -120,16 +121,17 @@ class Walker(object):
 #                    next(temp_series))
 
                 self._simulation.context.setParameter('AndersenTemperature', next(temp_series)) #TEMP FIX - TODO change
+                self._simulation.context.setParameter('AndersenCollisionFrequency', next(coll_series)) #TEMP FIX
 
                 if (increment < 1):
                     increment += 0.1
 
                     self._simulation.context.setParameter("k", distance_force*increment)  
                     self._simulation.context.setParameter("a", torsion_force*increment)
-                    self._simulation.step(300)
+                    self._simulation.step(1000)
 
                 else:
-                    self._simulation.step(1000) #self.configuration.n_steps)
+                    self._simulation.step(2000) #self.configuration.n_steps)
 
             except StopIteration:
                 done = True

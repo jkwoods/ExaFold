@@ -60,24 +60,24 @@ OMM_RESTRAIN_distance = dict(
         CustomBondForce=dict(
             # given on outer App call
             #  - can be empty
-            formula=["step((r-r0)-f)*(k/2)*((r-r0)-f)^2"],
+            formula=["step(abs(r-r0))*(k/2)*(abs(r-r0))^2"],
             # one-time calls to Restraint
             # type object
             parameters=[
                 dict(addGlobalParameter=["k", 0.0]),
                 dict(addPerBondParameter=["r0"]),
-                dict(addPerBondParameter=["f"])
+                #dict(addPerBondParameter=["f"])
             ],
             # Name and call signature for method
             # to add each restraint instance..
             # This case has:
             # 1 restraint ~ [2 atoms, 2 parameters]
-            restraint=dict(addBond=[2,2]),
+            restraint=dict(addBond=[2,1]),
             # One for each parameter
             # in order of parameters list
             units=[
                 u.angstrom,
-                u.angstrom,
+                #u.angstrom,
             ],
         ),
     ),
@@ -99,16 +99,16 @@ OMM_RESTRAIN_torsion = dict(
     ),
     flatbottom_customforce=dict(
         CustomTorsionForce=dict(
-            formula=["step((theta-theta0)-f)*(a/2)*((theta-theta0)-f)^2"],
+            formula=["step(abs(theta-theta0))*(a/2)*(abs(theta-theta0))^2"],
             parameters=[
                 dict(addGlobalParameter=["a", 0.0]), #must be called something different
                 dict(addPerTorsionParameter=["theta0"]),
-                dict(addPerTorsionParameter=["f"]),
+                #dict(addPerTorsionParameter=["f"]),
             ],
-            restraint=dict(addTorsion=[4,2]), #4 atoms, 1 parameter
+            restraint=dict(addTorsion=[4,1]), #4 atoms, 1 parameter
             units=[
                 u.radians,
-                u.radians,
+                #u.radians,
             ],
         ),
     ),
