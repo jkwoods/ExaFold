@@ -8,6 +8,7 @@ import warnings
 
 from simtk.openmm.app import Simulation, StateDataReporter, DCDReporter, PDBReporter
 from simtk import openmm
+from simtk import unit as u
 
 __all__ = ["Walker"]
 
@@ -103,13 +104,11 @@ class Walker(object):
         """        
         temp_series = iter(20*[36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0])
         coll_series = iter(20*[400,400,400,400,400,400,400,400,400,400,400,400,2000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,400,100,50])
+        vlimit = 2 #2 nm = 20 angstroms; amber is 10 angstroms
 
 	#TODO enable the turning off of rst
         self._simulation.context.setParameter("k", 0.0)
         self._simulation.context.setParameter("a", 0.0)
-        #for force in self._simulation.system.getForces():
-        #    if isinstance(force, openmm.NonbondedForce):        
-        #        force.setCutoffDistance(1.5)  #15 angstroms = 1.5 nm; amber does this
 
         done = False
         increment = 0.0
@@ -129,9 +128,30 @@ class Walker(object):
                 else:
                     self._simulation.step(2000)
 
-                #print(self._simulation.context.getState(False,True,False,False,False,False).getVelocities())
-
-
+                current_velocities = self._simulation.context.getState(getVelocities=True).getVelocities()
+                print(current_velocities)
+                changed = False
+                for i,v in enumerate(current_velocities):
+                    new_v = v
+                    changed_v = False
+                    if (v[0]/(u.nanometer/u.picoseconds) > vlimit):
+                        nv = vlimit
+                        new_v = openmm.Vec3(x=nv, y=(v[1]/(u.nanometer/u.picoseconds)), z=(v[2]/(u.nanometer/u.picoseconds)))*(u.nanometer/u.picoseconds)
+                        changed_v = True
+                    if (v[1]/(u.nanometer/u.picoseconds) > vlimit):
+                        nv = vlimit
+                        new_v = openmm.Vec3(x=(v[0]/(u.nanometer/u.picoseconds)), y=nv, z=(v[2]/(u.nanometer/u.picoseconds)))*(u.nanometer/u.picoseconds)
+                        changed_v = True
+                    if (v[2]/(u.nanometer/u.picoseconds) > vlimit):
+                        nv = vlimit
+                        new_v = openmm.Vec3(x=(v[0]/(u.nanometer/u.picoseconds)), y=(v[1]/(u.nanometer/u.picoseconds)), z=nv)*(u.nanometer/u.picoseconds)
+                        changed_v = True
+                    if changed_v:
+                       current_velocities[i] = new_v
+                       changed = True
+                if changed:
+                    self._simulation.context.setVelocities(current_velocities)
+                    print("Velocities reset")
             except StopIteration:
                 done = True
 
