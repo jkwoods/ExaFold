@@ -1,3 +1,5 @@
+__all__ = ["LangevinIntegrator", "VerletIntegrator", "AndersenThermostat"]
+
 
 from .component import TimestepComponent
 from simtk import unit as u
@@ -28,13 +30,46 @@ class LangevinIntegrator(TimestepComponent):
         super(LangevinIntegrator, self).__init__(
             "LangevinIntegrator", LangevinIntegrator.kwargs)
 
+class VerletIntegrator(TimestepComponent):
+
+    kwargs = [
+        ("stepSize"	, u.femtosecond),
+    ]
+
+    def __init__(self):
+        super(VerletIntegrator, self).__init__(
+            "VerletIntegrator", VerletIntegrator.kwargs) 
+
+class VariableVerletIntegrator(TimestepComponent):
+
+    kwargs = [
+        ("errorTol"     , 1), #no units
+    ]
+
+    def __init__(self):
+        super(VariableVerletIntegrator, self).__init__(
+            "VariableVerletIntegrator", VariableVerletInegrator.kwargs) 
+
+
+class AndersenThermostat(TimestepComponent):
+
+    kwargs = [
+        ("defaultTemperature"     	, u.kelvin),
+        ("defaultCollisionFrequency"	, 1/u.femtosecond),
+    ]
+
+    def __init__(self):
+        super(AndersenThermostat, self).__init__(
+            "AndersenThermostat", AndersenThermostat.kwargs)
+
 # TODO update these to use the TimestepComponent parent
 #      class following the LangevinIntegrator example.
+'''
 AndersenThermostat     = dict(
     defaultTemperature = u.kelvin,
     defaultCollisionFrequency = 1/u.picosecond,
 )
-
+'''
 MonteCarloBarostat     = dict(
     defaultPressure    = u.bar,
     defaultTemperature = u.kelvin,

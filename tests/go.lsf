@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#BSUB -P GEN119
+#BSUB -W 00:10
+#BSUB -nnodes 1
+#BSUB -J exafoldtest
+#BSUB -o ef_out.%J
+#BSUB -e ef_err.%J
+
+module load gcc
+module load cuda/10.1.168
+export OPENMM_CUDA_COMPILER=`which nvcc`
+
+cd $MEMBERWORK/gen119/EF
+
+date
+
+jsrun --smpiargs="off" -n 1 -a 1 -c 8 -g 1 -r 1 python run-test-omm_walker.py
+
+date
+
