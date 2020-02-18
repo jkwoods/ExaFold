@@ -1,0 +1,26 @@
+Mon Feb 17 16:50:29 EST 2020
+[36, 72, 108, 144, 180, 216, 252, 288, 324, 360, 480, 600, 562, 524, 486, 448, 410, 372, 334, 296, 258, 220, 182, 144, 106, 53, 0]
+[400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 2000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 400, 100, 50]
+Mon Feb 17 16:55:26 EST 2020
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@batch1>
+Subject: Job 926417: <exafoldtest> in cluster <summit> Done
+
+Job <exafoldtest> was submitted from host <login4> by user <woodsjk> in cluster <summit> at Mon Feb 17 16:50:04 2020
+Job was executed on host(s) <1*batch1>, in queue <batch>, as user <woodsjk> in cluster <summit> at Mon Feb 17 16:50:16 2020
+                            <42*a25n04>
+</ccs/home/woodsjk> was used as the home directory.
+</ccs/proj/gen119/woods/exa/exafold/tests> was used as the working directory.
+Started at Mon Feb 17 16:50:16 2020
+Terminated at Mon Feb 17 16:55:27 2020
+Results reported at Mon Feb 17 16:55:27 2020
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <ef_err.926417> for stderr output of this job.
+

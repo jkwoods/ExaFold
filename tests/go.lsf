@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #BSUB -P GEN119
-#BSUB -W 00:20
+#BSUB -W 00:10
 #BSUB -nnodes 1
 #BSUB -J exafoldtest
 #BSUB -o ef_out.%J
@@ -15,7 +15,7 @@ cd $MEMBERWORK/gen119/EF
 
 date
 
-jsrun --smpiargs="off" -n 1 -a 1 -c 1 -g 1 -r 1 python run-test-omm_walker.py
+jsrun --smpiargs="off" -n 1 -a 1 -c 8 -g 1 -r 1 python run-test-omm_walker.py
 
 date
 

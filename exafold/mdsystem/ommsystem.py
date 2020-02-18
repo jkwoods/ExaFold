@@ -2,7 +2,7 @@
 
 from time import sleep
 
-from simtk.openmm.app import PDBFile, AmberPrmtopFile, AmberInpcrdFile, NoCutoff
+from simtk.openmm.app import PDBFile, AmberPrmtopFile, AmberInpcrdFile, NoCutoff, CutoffNonPeriodic
 from simtk import openmm
 
 from mdtraj import Topology
@@ -107,7 +107,7 @@ class OmmSystem(object):
             if ff_type.lower() == "amber":
                 prmtop = AmberPrmtopFile(topofile)
                 inpcrd = AmberInpcrdFile(coordfile)
-                self.system = prmtop.createSystem(nonbondedMethod=NoCutoff)
+                self.system = prmtop.createSystem(nonbondedMethod=NoCutoff) #CutoffNonPeriodic - according to Ada, this would be good bc its what amber does - preliminary tests show that this hurts small/medium proteins
                 self._topology = Topology.from_openmm(prmtop.topology)
                 self._positions = inpcrd
 

@@ -102,14 +102,21 @@ class Walker(object):
     def go(self, distance_force, torsion_force):
         """Fire off the walker
         """        
-        temp_series = iter(20*[36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0])
-        coll_series = iter(20*[400,400,400,400,400,400,400,400,400,400,400,400,2000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,400,100,50])
-        vlimit = 2 #2 nm = 20 angstroms; amber is 10 angstroms
+        cycles = 20 #don't take user information for this is has to be tuned super perfectly
+        t = [36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0]#([(400//10)*i for i in range(1,11)]+[500,600]+[(550//13)*i+100 for i in range(12, -1, -1)]+[50,0])
+        c = [400,400,400,400,400,400,400,400,400,400,400,400,2000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,400,100,50]#(12*[400])+[2000]+(11*[4000])+[1000,100,50]
+        temp_series = iter(cycles*t)
+        coll_series = iter(cycles*c)
+        assert len(t) == len(c)
+        print(t)
+        print(c)
+        vlimit = 5 #1 nm = 10 angstroms; amber is 10 angstroms
 
 	#TODO enable the turning off of rst
         self._simulation.context.setParameter("k", 0.0)
         self._simulation.context.setParameter("a", 0.0)
 
+        step = 0
         done = False
         increment = 0.0
         while not done:
@@ -123,35 +130,52 @@ class Walker(object):
 
                     self._simulation.context.setParameter("k", distance_force*increment)  
                     self._simulation.context.setParameter("a", torsion_force*increment)
+
+
                     self._simulation.step(1000)
+                    step += 1000
 
                 else:
                     self._simulation.step(2000)
 
+
                 current_velocities = self._simulation.context.getState(getVelocities=True).getVelocities()
-                print(current_velocities)
+                #vlimit logic - there are some issues here
+                '''
                 changed = False
                 for i,v in enumerate(current_velocities):
-                    new_v = v
+                    nx = v[0]/(u.nanometer/u.picoseconds)
+                    ny = v[1]/(u.nanometer/u.picoseconds)
+                    nz = v[2]/(u.nanometer/u.picoseconds)
                     changed_v = False
-                    if (v[0]/(u.nanometer/u.picoseconds) > vlimit):
-                        nv = vlimit
-                        new_v = openmm.Vec3(x=nv, y=(v[1]/(u.nanometer/u.picoseconds)), z=(v[2]/(u.nanometer/u.picoseconds)))*(u.nanometer/u.picoseconds)
+                    if (nx > vlimit):
+                        nx = vlimit
                         changed_v = True
-                    if (v[1]/(u.nanometer/u.picoseconds) > vlimit):
-                        nv = vlimit
-                        new_v = openmm.Vec3(x=(v[0]/(u.nanometer/u.picoseconds)), y=nv, z=(v[2]/(u.nanometer/u.picoseconds)))*(u.nanometer/u.picoseconds)
+                    if (ny > vlimit):
+                        ny = vlimit
                         changed_v = True
-                    if (v[2]/(u.nanometer/u.picoseconds) > vlimit):
-                        nv = vlimit
-                        new_v = openmm.Vec3(x=(v[0]/(u.nanometer/u.picoseconds)), y=(v[1]/(u.nanometer/u.picoseconds)), z=nv)*(u.nanometer/u.picoseconds)
+                    if (nz > vlimit):
+                        nz = vlimit
+                        changed_v = True
+                    #negatives
+                    if (nx < -1*vlimit):
+                        nx = -1*vlimit
+                        changed_v = True
+                    if (ny < -1*vlimit):
+                        ny = -1*vlimit
+                        changed_v = True
+                    if (nz < -1*vlimit):
+                        nz = -1*vlimit
                         changed_v = True
                     if changed_v:
-                       current_velocities[i] = new_v
+                       current_velocities[i] = openmm.Vec3(x=nx, y=ny, z=nz)*(u.nanometer/u.picoseconds)
                        changed = True
+
+
                 if changed:
                     self._simulation.context.setVelocities(current_velocities)
-                    print("Velocities reset")
+                    print("Velocities reset at " + str(step) + ":\n")i
+                '''
             except StopIteration:
                 done = True
 
