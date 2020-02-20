@@ -73,8 +73,12 @@ def linear_peptide():
 	seq = seq.replace("\n", "") #clean
 
 	triseq = "{ "
-	for s in seq:
-        	triseq = triseq + tri(s) + " "
+        for i,s in enumerate(seq):
+            if (i==0):
+                triseq = triseq + "N"
+            elif (i==len(seq)-1):
+                triseq = triseq + "C"
+            triseq = triseq + tri(s) + " "
 	triseq = triseq + "}"
 
 	subprocess.call('cp '+forcefield+' amberscript', shell=True)
