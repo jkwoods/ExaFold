@@ -238,6 +238,72 @@ class OmmSystem(object):
             self._restraints[restraint_type][0]
         )
 
+    # Get a given force 
+    def get_force(self, type_name):
+        forces = self.system.getForces()
+        num_forces = self.system.getNumForces()
+        for i in range(num_forces):
+            #print("force name: " + str(forces[i].__class__.__name__) + "\n")
+            if forces[i].__class__.__name__==type_name:
+               return forces[i]
+
+    # Get a given force's index 
+    def get_force_id(self, type_name):
+        forces = self.system.getForces()
+        num_forces = self.system.getNumForces()
+        for i in range(num_forces):
+            #print("force name: " + str(forces[i].__class__.__name__) + "\n")
+            if forces[i].__class__.__name__==type_name:
+               return i
+
+    # Remove the non-bounded forces
+    def remove_nonbounded_forces(self):
+        i = self.get_force_id('NonbondedForce')
+        self.nonbonded_force = self.system.getForce(i)
+        self.system.removeForce(i) 
+             
+
+    # Add repulsive force
+    def apply_repulsive_force(self, weight):
+        #energy_exp = '4*epsilon*((sigma/r)^12-(sigma/r)^6); sigma=0.5*(sigma1+sigma2); epsilon=sqrt(epsilon1*epsilon2)'
+        #energy_exp = '4*w_a*epsilon*((sigma/r)^12); sigma=0.5*(sigma1+sigma2); epsilon=sqrt(epsilon1*epsilon2)'
+        #energy_exp = 'w_a*((0.8*1.122*sigma)^2-r^2)^2; sigma=0.5*(sigma1+sigma2)'
+        energy_exp = 'w_a*((0.8*sigma*(2)^(1/6))^2-r^2)^2; sigma=0.5*(sigma1+sigma2)'
+        repulsive_force = openmm.CustomNonbondedForce(energy_exp)
+        #repulsive_force.setNonbondedMethod(self.nonbonded_force.getNonbondedMethod()) 
+        repulsive_force.setNonbondedMethod(openmm.CustomNonbondedForce.CutoffPeriodic)
+        repulsive_force.addPerParticleParameter('sigma')
+        #repulsive_force.addPerParticleParameter('epsilon')
+        repulsive_force.setCutoffDistance(self.nonbonded_force.getCutoffDistance())
+        #print("repulsive force: " + str(repulsive_force)+ "\n")
+        #print("num of parameters: " + str(repulsive_force.getNumPerParticleParameters())+ "\n")
+        #print("Parameters:  " + str(repulsive_force.getParticelParameters(0))+ "\n")
+        #print("repulsive force; " + str(repulsive_force.getPerParticleParameterName(0))+ "\n")
+        #self.system.addForce(repulsive_force)
+    
+        num_particles = self.nonbonded_force.getNumParticles();
+        #avg_sigma = 0.0
+        #avg_epsilon = 0.0
+        sigmas = {} 
+        #epsilons = {}
+        for i in range(num_particles):
+           charge, sigma, epsilon = self.nonbonded_force.getParticleParameters(i)
+           sigmas[i] = sigma
+           #epsilons[i] = epsilon
+           #print("sigma: " + str(sigma._value) + "epsilon: " + str(epsilon)+"\n") 
+        #avg_sigma = sum(sigmas)/num_particles
+          # avg_epsilon += epsilon._value
+        
+        #avg_epsilon /= num_particles
+
+        for i in range(num_particles):
+           repulsive_force.addParticle([sigmas[i]])
+           #repulsive_force.addParticle([avg_sigma])
+
+        repulsive_force.addGlobalParameter('w_a', weight)
+       # print('num sys part: ' +str(self.system.getNumParticles())+ '\n')
+       # print('num CNBF part: ' +str( repulsive_force.getNumParticles())+ '\n')
+        self.system.addForce(repulsive_force)
 
     def save_pdb(self, pdb_file):
         PDBFile.write(pdb_file, self.topology)

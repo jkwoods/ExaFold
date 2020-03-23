@@ -40,13 +40,45 @@ ommsystem.initialize_restraint_force(tor_restraint)
 ommsystem.add_restraint_interactions(t_restraint_type, torsion_restraints)
 ommsystem.apply_restraint_force(t_restraint_type)
 
+
+# ---------- Remove nonbounded forces -----------------------#
+ommsystem.remove_nonbounded_forces()
+print('Nonbounded forces has been removed \n')
+
+
+# ---------- Apply Custom Nonbounded force ------------------#
+weight = 0.1
+ommsystem.apply_repulsive_force( weight)
+print('Custom nonbounded force (LJ-repulsive only) has been applied \n')
+
 #---------- BIND MD System to Walker -----------------------#
 walker = Walker()
 walker.generate_simulation(ommsystem)
-walker.simulation.minimizeEnergy()
+print('Simulation has been generated \n')
 
-walker.configure_walk(md_instructions)
-walker.go(distance_force, torsion_force)
+print('Energy minimization 1) ... \n')
+walker.simulation.minimizeEnergy( )
+#walker.simulation.minimizeEnergy( maxIterations=200)
+print('Energy minimization 1 has been completed \n')
 
+#walker.update_sigma()
+#walker.update_weight(0.6)
+#print('Parameters have been updated \n')
+
+walker.configure_walk("1aki_test.pdb", 5000, md_instructions)
+print('Heat annealing ... \n')
+#walker.go(distance_force, torsion_force, 1000)
+walker.torsion_angle_md_go(distance_force, torsion_force, [20000,1000, 300], [3000, 3000, 2000])
+
+#print('Energy minimization 2) ... \n')
+#walker.simulation.minimizeEnergy( maxIterations=1000)
+#print('Energy minimization 2 has been completed \n')
+
+#walker.update_sigma()
+#walker.update_weight(1.0)
+#print('Parameters have been updated \n')
+
+#print('Energy minimization 3) ... \n')
+#walker.simulation.minimizeEnergy( maxIterations=100)
 
 

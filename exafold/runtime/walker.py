@@ -30,9 +30,9 @@ class Walker(object):
             self._configuration = Configuration()
 
 
-    def add_reporters(self):
+    def add_reporters(self, report_name, report_interval):
 
-        self.simulation.reporters.append(PDBReporter("output.pdb", 5000))
+        self.simulation.reporters.append(PDBReporter(report_name, report_interval))
 
         if self.configuration.fn_state:
             self.simulation.reporters.append(
@@ -58,11 +58,11 @@ class Walker(object):
             ))
 
 
-    def configure_walk(self, cfg=None):
+    def configure_walk(self, report_name, report_interval, cfg=None):
         if cfg:
             self.configuration.configure(cfg)
 
-        self.add_reporters()
+        self.add_reporters(report_name, report_interval)
 
         # Poor-mans version of properties on Walker
         # instances to corresponding Configuration fields
@@ -99,7 +99,7 @@ class Walker(object):
                 Warning)
 
 
-    def go(self, distance_force, torsion_force):
+    def go(self, distance_force, torsion_force, time_steps):
         """Fire off the walker
         """        
         cycles = 20 #don't take user information for this is has to be tuned super perfectly
@@ -123,7 +123,7 @@ class Walker(object):
             try:
 
                 self._simulation.context.setParameter('AndersenTemperature', next(temp_series)) #TEMP FIX - TODO change
-                self._simulation.context.setParameter('AndersenCollisionFrequency', next(coll_series)) #TEMP FIX
+                #self._simulation.context.setParameter('AndersenCollisionFrequency', next(coll_series)) #TEMP FIX
 
                 if (increment < 1):
                     increment += 0.1
@@ -132,11 +132,11 @@ class Walker(object):
                     self._simulation.context.setParameter("a", torsion_force*increment)
 
 
-                    self._simulation.step(1000)
-                    step += 1000
+                    self._simulation.step(time_steps)
+                    step += time_steps
 
                 else:
-                    self._simulation.step(2000)
+                    self._simulation.step(2*time_steps)
 
 
                 current_velocities = self._simulation.context.getState(getVelocities=True).getVelocities()
@@ -174,7 +174,7 @@ class Walker(object):
 
                 if changed:
                     self._simulation.context.setVelocities(current_velocities)
-                    print("Velocities reset at " + str(step) + ":\n")i
+                    print("Velocities reset at " + str(step) + ":\n")
                 '''
             except StopIteration:
                 done = True
@@ -236,6 +236,7 @@ class Walker(object):
     def generate_simulation(self, system):
 
         assert isinstance(system, OmmSystem)
+        self._system = system
 
         if not self.platform:
             self._platform = self.create_platform(
@@ -262,4 +263,63 @@ class Walker(object):
 
     def set_positions(self, positions):
         self._simulation.context.setPositions(positions)
+     
+    def update_sigma(self):
+        repulsive_force = self._system.system.getForce(self._system.get_force_id('CustomNonbondedForce'))
+        num_particles = repulsive_force.getNumParticles()
+        sigmas = {}
+        for i in range(num_particles):
+           sigmas[i] = repulsive_force.getParticleParameters(i)
+        sigma_a = sum(sigmas)/num_particles
+        
+        for i in range(num_particles):
+           repulsive_force.setParticleParameters(i, [sigma_a, sigma_a])
+        repulsive_force.updateParametersInContext(self._simulation.context)
 
+    def update_weight(self, weight_a):
+        self._simulation.context.setParameter("w_a", weight_a)
+   
+
+   # '''
+    #High temperature torsion angle MD
+    def torsionMD( self, temp):
+        self._simulation.context.setParameter('AndersenTemperature', temp)
+        self._simulation.context.setParameter('AndersenCollisionFrequency', 10*temp) 
+    
+    # Torsion MD slow cooling
+    def torsionMD_slow_cooling( self, cur_temp, target_temp, time_steps):
+        self._simulation.step(time_steps)
+        #self.update_weight(0.1)
+        inc_steps = 100
+        delta_inc = 0.9/inc_steps
+        delta_temp = (target_temp -cur_temp)/inc_steps
+        temp = cur_temp
+        for i in range(inc_steps):
+           self.update_weight(0.1 + i*delta_inc)
+           self.torsionMD(temp+i*delta_temp)
+    
+    # Cartesian MD slow cooling
+    def cartesianMD_slow_cooling( self, cur_temp, target_temp, time_steps):
+        self._simulation.step(time_steps)
+        self.update_weight(1.0)
+        inc_steps = 100
+        delta_temp = (target_temp -cur_temp)/inc_steps
+        temp = cur_temp
+        for i in range(inc_steps):     
+           self.torsionMD( temp+i*delta_temp)
+
+    #CNS approach ....
+    def torsion_angle_md_go(self, distance_force, torsion_force, temp, time_steps):
+        #temp = [1000, 500, 300]
+        increment = 0.0
+        self._simulation.step(time_steps[0])
+        self.torsionMD( temp[0])
+        while (increment < 1):
+           increment += 0.1
+           self._simulation.context.setParameter("k", increment*distance_force)
+           self._simulation.context.setParameter("a", increment*torsion_force)
+        #stage 2: slow cooling
+        self.torsionMD_slow_cooling( temp[0], temp[1], time_steps[1])
+        #stage 3: slow cooling
+        self.cartesianMD_slow_cooling( temp[1], temp[2], time_steps[2])
+   # '''
