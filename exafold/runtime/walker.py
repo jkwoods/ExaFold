@@ -103,13 +103,13 @@ class Walker(object):
         """Fire off the walker
         """        
         cycles = 20 #don't take user information for this is has to be tuned super perfectly
-        t = [36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0]#([(400//10)*i for i in range(1,11)]+[500,600]+[(550//13)*i+100 for i in range(12, -1, -1)]+[50,0])
-        c = [400,400,400,400,400,400,400,400,400,400,400,400,2000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,400,100,50]#(12*[400])+[2000]+(11*[4000])+[1000,100,50]
+        t = [400-10*i for i in range(25)] # [36,72,108,144,180,216,252,288,324,360,480,600,562,524,486,448,410,372,334,296,258,220,182,144,106,53,0]#([(400//10)*i for i in range(1,11)]+[500,600]+[(550//13)*i+100 for i in range(12, -1, -1)]+[50,0])
+        c = t*10 # [400,400,400,400,400,400,400,400,400,400,400,400,2000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,4000,400,100,50]#(12*[400])+[2000]+(11*[4000])+[1000,100,50]
         temp_series = iter(cycles*t)
         coll_series = iter(cycles*c)
-        assert len(t) == len(c)
-        print(t)
-        print(c)
+        #assert len(t) == len(c)
+        print(temp_series)
+        print(coll_series)
         vlimit = 5 #1 nm = 10 angstroms; amber is 10 angstroms
 
 	#TODO enable the turning off of rst
@@ -282,44 +282,92 @@ class Walker(object):
 
    # '''
     #High temperature torsion angle MD
-    def torsionMD( self, temp):
+    def hightemp_torsion(self, temp, distance_force, torsion_force, time_steps):
+
+        self._simulation.context.setParameter("k", 0.0)
+        self._simulation.context.setParameter("a", 0.0)
         self._simulation.context.setParameter('AndersenTemperature', temp)
-        self._simulation.context.setParameter('AndersenCollisionFrequency', 10*temp) 
+        #self._simulation.context.setParameter('AndersenCollisionFrequency', 10*temp)
+
+        done = False
+        increment = 0.0
+        while not done:
+            try:
+                if (increment < 1):
+                    increment += 0.1
+                    self._simulation.context.setParameter("k", distance_force*increment)
+                    self._simulation.context.setParameter("a", torsion_force*increment)
+                    self._simulation.step(time_steps)
+                else:
+                    self._simulation.step(2*time_steps)
+            except StopIteration:
+                done = True
+
+
     
     # Torsion MD slow cooling
-    def torsionMD_slow_cooling( self, cur_temp, target_temp, time_steps):
-        self._simulation.step(time_steps)
-        #self.update_weight(0.1)
+    def cooling_torsion(self, cur_temp, target_temp, time_steps):
+      
+        cycles = 20
         inc_steps = 100
-        delta_inc = 0.9/inc_steps
         delta_temp = (target_temp -cur_temp)/inc_steps
         temp = cur_temp
-        for i in range(inc_steps):
-           self.update_weight(0.1 + i*delta_inc)
-           self.torsionMD(temp+i*delta_temp)
-    
+        t = [temp+i*delta_temp for i in range(inc_steps)] 
+       # c = t*10
+        weight = 0.1
+        delta_weight = (1.0 -weight)/inc_steps
+        w = [weight+i*delta_weight for i in range(inc_steps)]
+        weight_series = iter(cycles*w)
+        temp_series = iter(cycles*t)
+        #coll_series = iter(cycles*c)
+        #assert len(t) == len(c)
+        print(t)
+        print(w)
+
+        done = False
+        while not done:
+            try:
+                self.update_weight(next(weight_series))
+                self._simulation.context.setParameter('AndersenTemperature', next(temp_series)) #TEMP FIX - TODO change
+                #self._simulation.context.setParameter('AndersenCollisionFrequency', next(coll_series)) #TEMP FIX
+                self._simulation.step(time_steps)
+            except StopIteration:
+                done = True
+
+
     # Cartesian MD slow cooling
-    def cartesianMD_slow_cooling( self, cur_temp, target_temp, time_steps):
-        self._simulation.step(time_steps)
+    def cooling_cartesian(self, cur_temp, target_temp, time_steps):
+
         self.update_weight(1.0)
+        cycles = 20
         inc_steps = 100
         delta_temp = (target_temp -cur_temp)/inc_steps
         temp = cur_temp
-        for i in range(inc_steps):     
-           self.torsionMD( temp+i*delta_temp)
+        t = [temp+i*delta_temp for i in range(inc_steps)] 
+        c = t*10
+        temp_series = iter(cycles*t)
+        coll_series = iter(cycles*c)
+        #assert len(t) == len(c)
+        print(temp_series)
+        print(coll_series)
+
+        done = False
+        while not done:
+            try:
+                self._simulation.context.setParameter('AndersenTemperature', next(temp_series)) #TEMP FIX - TODO change
+                #self._simulation.context.setParameter('AndersenCollisionFrequency', next(coll_series)) #TEMP FIX
+                self._simulation.step(time_steps)
+            except StopIteration:
+                done = True
+
 
     #CNS approach ....
     def torsion_angle_md_go(self, distance_force, torsion_force, temp, time_steps):
         #temp = [1000, 500, 300]
-        increment = 0.0
-        self._simulation.step(time_steps[0])
-        self.torsionMD( temp[0])
-        while (increment < 1):
-           increment += 0.1
-           self._simulation.context.setParameter("k", increment*distance_force)
-           self._simulation.context.setParameter("a", increment*torsion_force)
-        #stage 2: slow cooling
-        self.torsionMD_slow_cooling( temp[0], temp[1], time_steps[1])
-        #stage 3: slow cooling
-        self.cartesianMD_slow_cooling( temp[1], temp[2], time_steps[2])
+        #stage 1: high temperature torsion angle MD
+        self.hightemp_torsion( temp[0], distance_force, torsion_force, time_steps[0])
+        #stage 2: slow cooling torsion angle MD
+        self.cooling_torsion( temp[0], temp[1], time_steps[1])
+        #stage 3: cooling cartesian MD
+        self.cooling_cartesian(temp[1], temp[2], time_steps[2])
    # '''
