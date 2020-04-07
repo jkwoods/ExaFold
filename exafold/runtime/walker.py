@@ -308,8 +308,8 @@ class Walker(object):
     # Torsion MD slow cooling
     def cooling_torsion(self, cur_temp, target_temp, time_steps):
       
-        cycles = 20
-        inc_steps = 100
+        cycles = 10
+        inc_steps = 20
         delta_temp = (target_temp -cur_temp)/inc_steps
         temp = cur_temp
         t = [temp+i*delta_temp for i in range(inc_steps)] 
@@ -339,8 +339,8 @@ class Walker(object):
     def cooling_cartesian(self, cur_temp, target_temp, time_steps):
 
         self.update_weight(1.0)
-        cycles = 20
-        inc_steps = 100
+        cycles = 10
+        inc_steps = 20
         delta_temp = (target_temp -cur_temp)/inc_steps
         temp = cur_temp
         t = [temp+i*delta_temp for i in range(inc_steps)] 
@@ -368,6 +368,10 @@ class Walker(object):
         self.hightemp_torsion( temp[0], distance_force, torsion_force, time_steps[0])
         #stage 2: slow cooling torsion angle MD
         self.cooling_torsion( temp[0], temp[1], time_steps[1])
+        #stage 4: Resume back the nonboded forces instead of repulsive force
+        self._system.remove_repulsive_force()
+        #print(" Repulsive force has been removed \n ")
+        self._system.apply_nonbonded_forces()
         #stage 3: cooling cartesian MD
         self.cooling_cartesian(temp[1], temp[2], time_steps[2])
    # '''

@@ -261,12 +261,23 @@ class OmmSystem(object):
         i = self.get_force_id('NonbondedForce')
         self.nonbonded_force = self.system.getForce(i)
         self.system.removeForce(i) 
-             
+         
+    # Remove the repulsive force
+    def remove_repulsive_force(self):
+        i = self.get_force_id('CustomNonbondedForce')
+        self.nonbonded_force = self.system.getForce(i)
+        self.system.removeForce(i)    
+
+    # Apply non-bonded forces
+    def apply_nonbonded_forces(self):
+        i = self.system.addForce(self.nonbonded_force)
+        print("Nonbonded forces are added back into the system with the index " + str(i) +"\n")
 
     # Add repulsive force
     def apply_repulsive_force(self, weight):
         #energy_exp = '4*epsilon*((sigma/r)^12-(sigma/r)^6); sigma=0.5*(sigma1+sigma2); epsilon=sqrt(epsilon1*epsilon2)'
         #energy_exp = '4*w_a*epsilon*((sigma/r)^12); sigma=0.5*(sigma1+sigma2); epsilon=sqrt(epsilon1*epsilon2)'
+        #energy_exp = '4*w_a*((sigma/r)^12); sigma=0.5*(sigma1+sigma2)'
         #energy_exp = 'w_a*((0.8*1.122*sigma)^2-r^2)^2; sigma=0.5*(sigma1+sigma2)'
         energy_exp = 'w_a*((0.8*sigma*(2)^(1/6))^2-r^2)^2; sigma=0.5*(sigma1+sigma2)'
         repulsive_force = openmm.CustomNonbondedForce(energy_exp)

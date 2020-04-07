@@ -65,10 +65,10 @@ print('Energy minimization 1 has been completed \n')
 #walker.update_weight(0.6)
 #print('Parameters have been updated \n')
 
-walker.configure_walk("1aki_test_gomd.pdb", 5000, md_instructions)
+walker.configure_walk("1aki_test.pdb", 5000, md_instructions)
 print('Heat annealing ... \n')
 #walker.go(distance_force, torsion_force, 1000)
-walker.torsion_angle_md_go(distance_force, torsion_force, [800,500, 300], [1000, 1000, 1000])
+walker.torsion_angle_md_go(distance_force, torsion_force, [600,400, 300], [500, 500, 500])
 
 #print('Energy minimization 2) ... \n')
 #walker.simulation.minimizeEnergy( maxIterations=1000)
