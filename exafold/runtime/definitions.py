@@ -26,6 +26,7 @@ _amber_test_configuration = dict(
 )
 
 _default_rt_configuration = dict(
-    device="Reference",
+    device="CUDA",
     host="local",
+    properties = {'CudaDeviceIndex': '0,1'},# 'CudaPrecision': 'double', 'CudaUseBlockingSync': 'true'},
 )

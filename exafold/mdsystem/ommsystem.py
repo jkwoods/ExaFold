@@ -256,8 +256,8 @@ class OmmSystem(object):
             if forces[i].__class__.__name__==type_name:
                return i
 
-    # Remove the non-bounded forces
-    def remove_nonbounded_forces(self):
+    # Remove the nonbonded forces
+    def remove_nonbonded_forces(self):
         i = self.get_force_id('NonbondedForce')
         self.nonbonded_force = self.system.getForce(i)
         self.system.removeForce(i) 

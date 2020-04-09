@@ -242,6 +242,9 @@ class Walker(object):
             self._platform = self.create_platform(
                 _default_rt_configuration["device"])
 
+        if not self.properties:
+            self._properties = _default_rt_configuration["properties"]
+
         if not self.integrator:
             self.create_integrator(
                 _amber_test_configuration)  #TODO change back when figured out
