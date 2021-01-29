@@ -5,7 +5,8 @@ from time import sleep
 from simtk.openmm.app import PDBFile, AmberPrmtopFile, AmberInpcrdFile, NoCutoff, CutoffNonPeriodic
 from simtk import openmm
 
-from mdtraj import Topology
+#from MDAnalysis import Topology
+#from mdtraj import Topology
 
 __all__ = ["OmmSystem"]
 
@@ -108,7 +109,8 @@ class OmmSystem(object):
                 prmtop = AmberPrmtopFile(topofile)
                 inpcrd = AmberInpcrdFile(coordfile)
                 self.system = prmtop.createSystem(nonbondedMethod=NoCutoff) #CutoffNonPeriodic - according to Ada, this would be good bc its what amber does - preliminary tests show that this hurts small/medium proteins
-                self._topology = Topology.from_openmm(prmtop.topology)
+        #        self._topology = Topology.from_openmm(prmtop.topology)
+                self._topology = prmtop.topology
                 self._positions = inpcrd
 
         elif system_file is not None:
@@ -118,8 +120,9 @@ class OmmSystem(object):
                     # this line is a bit silly but Topology class
                     # doesn't seem to directly load PDB so keeps
                     # the imports clean
-                    self._topology = Topology.from_openmm(
-                        PDBFile(topofile).topology)
+                     self._topology = PDBFile(topofile).topology
+          #           self._topology = Topology.from_openmm(
+          #              PDBFile(topofile).topology)
 
         else:
             # Inspect and set ff_type
@@ -183,9 +186,13 @@ class OmmSystem(object):
         assert self.topology  # if None, can't get atom index from resatom
 
         # MDTraj residues start numbering at 1
-        mdtrajatom = self.topology.select("residue %d and name %s" % (
-            resatom[0], resatom[1].upper()
-        ))
+        #mdtrajatom = self.topology.select("residue %d and name %s" % (
+        #    resatom[0], resatom[1].upper()
+        #))
+        #for atom in self.topology.atoms:
+        #   if(( atom.residue.index == resatom[0]) and ( atom.residue.name == resatom[1].upper())):
+        #      mdtrajatom = 0 #atom.index 
+        mdtrajatom = 0  
         if mdtrajatom:
             return int(mdtrajatom)
         else:

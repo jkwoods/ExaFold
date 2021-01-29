@@ -254,7 +254,8 @@ class Walker(object):
                getattr(system.system, "addForce")(component)
 
         self._simulation = Simulation(
-            system.topology.to_openmm(),
+            system.topology,
+            #system.topology.to_openmm(),
             system.system,
             self.integrator,
             self.platform,)
