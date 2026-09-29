@@ -8,14 +8,6 @@ download_url: https://github.com/jkwoods/ExaFold
 url:          https://github.com/jkwoods/ExaFold
 released:     false
 
-authors:
-  - Jess Woods
-  - John Ossyra
-
-emails:
-  - jesskwoods@gmail.com
-  - jrossyra@gmail.com
-
 long_description: |
   ExaFold takes a protein sequence, <calculates restraints via contact estimates>, and 
   employs either Amber or OpenMM to fold from a linear structure
